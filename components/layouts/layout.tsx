@@ -12,7 +12,7 @@ type LayoutProps = {
 
 const Layout = ({ children }: LayoutProps) => {
 	return (
-		<Box as="main" pb={8}>
+		<Box as="main">
 			<Head>
 				<meta
 					name="viewport"

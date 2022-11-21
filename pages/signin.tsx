@@ -16,7 +16,7 @@ import Content from '../components/layouts/content';
 
 export default function SimpleCard() {
 	return (
-		<Flex minH={'100vh'} align={'center'} justify={'center'}>
+		<Flex minH={'93vh'} align={'center'} justify={'center'}>
 			<Content>
 				<Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
 					<Stack align={'center'}>
