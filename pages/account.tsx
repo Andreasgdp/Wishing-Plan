@@ -137,7 +137,7 @@ export default function Account({ session }: { session: AuthSession }) {
 				<input
 					id="email"
 					type="text"
-					value={session.user.email}
+					value={session?.user?.email}
 					disabled
 				/>
 			</div>
