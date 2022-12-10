@@ -8,7 +8,7 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
-import Content from '../components/layouts/content';
+import Content from '../../components/layouts/content';
 
 type ForgotPasswordFormInputs = {
 	email: string;
