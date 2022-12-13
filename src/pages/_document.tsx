@@ -41,16 +41,6 @@ export default class Document extends NextDocument {
 				/>
 
 				<link rel="manifest" href="/manifest.json" />
-				<link
-					rel="shortcut icon"
-					href="/src/static/icons/logo-dark.svg"
-					media="(prefers-color-scheme: dark)"
-				/>
-				<link
-					rel="shortcut icon"
-					href="/src/static/icons/logo-light.svg"
-					media="(prefers-color-scheme: light)"
-				/>
 
 				<link
 					rel="stylesheet"
