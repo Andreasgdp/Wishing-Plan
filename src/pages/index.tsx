@@ -4,6 +4,7 @@ import Hero from '../components/hero-section';
 import Testimonials from '../components/testimonials';
 import styles from './index.module.css';
 
+import dynamic from 'next/dynamic';
 import Content from '../components/layouts/content';
 import { trpc } from '../utils/trpc';
 
@@ -30,6 +31,10 @@ const Home: NextPage = () => {
 
 export default Home;
 
+const CreateLinkForm = dynamic(() => import('../components/create-link'), {
+	ssr: false,
+});
+
 const AuthShowcase: React.FC = () => {
 	const { data: sessionData } = useSession();
 
@@ -42,7 +47,10 @@ const AuthShowcase: React.FC = () => {
 		<div className={styles.authContainer}>
 			<p className={styles.showcaseText}>
 				{sessionData && (
-					<span>Logged in as {sessionData.user?.name}</span>
+					<div>
+						<span>Logged in as {sessionData.user?.name}</span>
+						<CreateLinkForm />
+					</div>
 				)}
 				{secretMessage && <span> - {secretMessage}</span>}
 			</p>
