@@ -12,6 +12,14 @@ import { prisma } from '../../../server/db/client';
 export const authOptions: NextAuthOptions = {
 	// Include user.id on session
 	callbacks: {
+		async signIn({ user, account, profile, email, credentials }) {
+			if (user.name) {
+				return true;
+			} else {
+				// User has no custom name yet, redirect him
+				return '/userInfo';
+			}
+		},
 		session({ session, user }) {
 			if (session.user) {
 				session.user.id = user.id;
@@ -61,10 +69,10 @@ export const authOptions: NextAuthOptions = {
 				return user;
 			},
 		}),
-    GoogleProvider({
-      clientId: env.GOOGLE_CLIENT_ID,
-      clientSecret: env.GOOGLE_CLIENT_SECRET,
-    }),
+		GoogleProvider({
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
+		}),
 		DiscordProvider({
 			clientId: env.DISCORD_CLIENT_ID,
 			clientSecret: env.DISCORD_CLIENT_SECRET,

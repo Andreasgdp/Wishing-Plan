@@ -43,11 +43,11 @@ export default function CallToActionWithVideo() {
 								zIndex: -1,
 							}}
 						>
-							Write once,
+							Plan wishes,
 						</Text>
 						<br />
 						<Text as={'span'} color={'red.400'}>
-							use everywhere!
+							find what is most important
 						</Text>
 					</Heading>
 					<Text color={'gray.500'}>

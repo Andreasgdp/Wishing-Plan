@@ -11,17 +11,20 @@ const LogoBox = styled.span`
 	height: 30px;
 	line-height: 20px;
 	padding: 10px;
+	img {
+		transition-duration: 250ms;
+	}
 	&:hover img {
-		transform: rotate(20deg);
+		transform: rotate(15deg);
 	}
 `;
 
 const Logo = () => {
-	const foorPrintImg = `/logo${useColorModeValue('-light', '-dark')}.svg`;
+	const logoImg = `/logo${useColorModeValue('-light', '-dark')}.svg`;
 	return (
 		<Link href="/">
 			<LogoBox>
-				<Image src={foorPrintImg} width={22} height={22} alt="logo" />
+				<Image src={logoImg} width={25} height={25} alt="logo" />
 				<Text color={useColorModeValue('gray.800', 'white.900')} ml={3}>
 					Wishing Plan
 				</Text>

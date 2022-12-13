@@ -8,8 +8,9 @@ import {
 	useColorModeValue,
 	VisuallyHidden,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
+import type { ReactNode } from 'react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
-import { ReactNode } from 'react';
 
 const Logo = (props: any) => {
 	return (
@@ -79,10 +80,18 @@ export default function SmallCentered() {
 			>
 				<Logo />
 				<Stack direction={'row'} spacing={6}>
-					<Link href='/'>Home</Link>
-					<Link href={'#'}>About</Link>
-					<Link href={'#'}>Blog</Link>
-					<Link href={'#'}>Contact</Link>
+					<Link as={NextLink} href="/">
+						Home
+					</Link>
+					<Link as={NextLink} href={'/about'}>
+						About
+					</Link>
+					<Link as={NextLink} href={'#'}>
+						Blog
+					</Link>
+					<Link as={NextLink} href={'#'}>
+						Contact
+					</Link>
 				</Stack>
 			</Container>
 
