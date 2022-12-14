@@ -29,7 +29,25 @@ const MyApp: AppType<{ session: Session | null }> = ({
 					<>
 						<link
 							rel="shortcut icon"
-							href="/favicon/logo-light.ico"
+							href="/favicon/light/favicon.ico"
+						/>
+
+						<link
+							rel="apple-touch-icon"
+							sizes="180x180"
+							href="/favicon/light/apple-touch-icon.png"
+						/>
+						<link
+							rel="icon"
+							type="image/png"
+							sizes="32x32"
+							href="/favicon/light/favicon-32x32.png"
+						/>
+						<link
+							rel="icon"
+							type="image/png"
+							sizes="16x16"
+							href="/favicon/light/favicon-16x16.png"
 						/>
 					</>
 				)}
@@ -37,7 +55,24 @@ const MyApp: AppType<{ session: Session | null }> = ({
 					<>
 						<link
 							rel="shortcut icon"
-							href="/favicon/logo-dark.ico"
+							href="/favicon/dark/favicon.ico"
+						/>
+						<link
+							rel="apple-touch-icon"
+							sizes="180x180"
+							href="/favicon/dark/apple-touch-icon.png"
+						/>
+						<link
+							rel="icon"
+							type="image/png"
+							sizes="32x32"
+							href="/favicon/dark/favicon-32x32.png"
+						/>
+						<link
+							rel="icon"
+							type="image/png"
+							sizes="16x16"
+							href="/favicon/dark/favicon-16x16.png"
 						/>
 					</>
 				)}
