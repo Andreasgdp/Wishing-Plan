@@ -78,7 +78,7 @@ const Navbar = (props: NavbarProps) => {
 					</LinkItem>
 					<Link
 						target="_blank"
-						href="https://github.com/Andreasgdp/Portfolio"
+						href="https://github.com/Andreasgdp/Wishing-Plan"
 						color={useColorModeValue('gray200', 'white.900')}
 						display="inline-flex"
 						alignItems="center"
