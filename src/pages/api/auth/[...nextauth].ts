@@ -8,6 +8,8 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { env } from '@env/server.mjs';
 import { prisma } from '@server/db/client';
 
+const useSecureCookies = !!process.env.VERCEL_URL;
+
 export const authOptions: NextAuthOptions = {
 	// Include user.id on session
 	callbacks: {
@@ -44,6 +46,22 @@ export const authOptions: NextAuthOptions = {
 			clientSecret: env.DISCORD_CLIENT_SECRET,
 		}),
 	],
+	// Source: https://vercel.com/templates/next.js/subdomains-auth
+	secret: process.env.SECRET,
+	cookies: {
+		sessionToken: {
+			name: `${
+				useSecureCookies ? '__Secure-' : ''
+			}next-auth.session-token`,
+			options: {
+				httpOnly: true,
+				sameSite: 'lax',
+				path: '/',
+				domain: '.solutions-subdomain-auth.vercel.sh',
+				secure: useSecureCookies,
+			},
+		},
+	},
 	theme: {
 		colorScheme: 'auto', // "auto" | "dark" | "light"
 		brandColor: '#ed64a6', // Hex color code
