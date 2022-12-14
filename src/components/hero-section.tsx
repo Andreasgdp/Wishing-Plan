@@ -1,18 +1,20 @@
+import type { IconProps } from '@chakra-ui/react';
 import {
-	Container,
-	Stack,
-	Flex,
 	Box,
-	Heading,
-	Text,
 	Button,
-	Image,
+	Container,
+	createIcon,
+	Flex,
+	Heading,
 	Icon,
 	IconButton,
-	createIcon,
-	IconProps,
+	Image,
+	Link,
+	Stack,
+	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
+import NextLink from 'next/link';
 
 export default function CallToActionWithVideo() {
 	return (
@@ -60,17 +62,19 @@ export default function CallToActionWithVideo() {
 						spacing={{ base: 4, sm: 6 }}
 						direction={{ base: 'column', sm: 'row' }}
 					>
-						<Button
-							rounded={'full'}
-							size={'lg'}
-							fontWeight={'normal'}
-							px={6}
-							colorScheme={'red'}
-							bg={'red.400'}
-							_hover={{ bg: 'red.500' }}
-						>
-							Get started
-						</Button>
+						<Link as={NextLink} href={'/auth/signin'}>
+							<Button
+								rounded={'full'}
+								size={'lg'}
+								fontWeight={'normal'}
+								px={6}
+								colorScheme={'red'}
+								bg={'red.400'}
+								_hover={{ bg: 'red.500' }}
+							>
+								Get started
+							</Button>
+						</Link>
 						<Button
 							rounded={'full'}
 							size={'lg'}

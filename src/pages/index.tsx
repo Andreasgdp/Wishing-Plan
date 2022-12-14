@@ -1,9 +1,8 @@
 import { type NextPage } from 'next';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import Hero from '../components/hero-section';
-import Testimonials from '../components/testimonials';
+import { getSession, signIn, signOut, useSession } from 'next-auth/react';
 import styles from './index.module.css';
 
+import type { CtxOrReq } from 'next-auth/client/_utils';
 import dynamic from 'next/dynamic';
 import Content from '../components/layouts/content';
 import { trpc } from '../utils/trpc';
@@ -22,8 +21,6 @@ const Home: NextPage = () => {
 					</p>
 				</div>
 				<AuthShowcase />
-				<Hero></Hero>
-				<Testimonials></Testimonials>
 			</Content>
 		</>
 	);
@@ -63,3 +60,20 @@ const AuthShowcase: React.FC = () => {
 		</div>
 	);
 };
+
+export async function getServerSideProps(context: CtxOrReq | undefined) {
+	const session = await getSession(context);
+
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/product',
+				permanent: true,
+			},
+		};
+	}
+
+	return {
+		props: {},
+	};
+}
