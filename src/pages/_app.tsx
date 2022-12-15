@@ -7,8 +7,8 @@ import { trpc } from '../utils/trpc';
 import { ChakraProvider } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import Head from 'next/head';
-import Fonts from '../components/fonts';
-import Layout from '../components/layouts/layout';
+import Fonts from '../components/common/Theme/Fonts';
+import Layout from '../components/layouts/Layout';
 import theme from '../libs/theme';
 import '../styles/globals.css';
 

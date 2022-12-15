@@ -8,7 +8,7 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 const Testimonial = ({ children }: { children: ReactNode }) => {
 	return <Box>{children}</Box>;
@@ -90,14 +90,14 @@ const TestimonialAvatar = ({
 	);
 };
 
-export default function WithSpeechBubbles() {
+export function TestemonialSection() {
 	return (
 		<Box bg={useColorModeValue('gray.100', 'gray.700')}>
 			<Container maxW={'7xl'} py={16} as={Stack} spacing={12}>
 				<Stack spacing={0} align={'center'}>
 					<Heading>Our Clients Speak</Heading>
 					<Text>
-						We have been working with clients around the world
+						Our clients love us! Check out what they have to say
 					</Text>
 				</Stack>
 				<Stack
@@ -110,17 +110,17 @@ export default function WithSpeechBubbles() {
 								Efficient Collaborating
 							</TestimonialHeading>
 							<TestimonialText>
-								Lorem ipsum dolor sit amet, consectetur
-								adipiscing elit. Auctor neque sed imperdiet nibh
-								lectus feugiat nunc sem.
+								Easy to use and very intuitive. I love how I can
+								easily collaborate others creating shared
+								wishlists.
 							</TestimonialText>
 						</TestimonialContent>
 						<TestimonialAvatar
 							src={
-								'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+								'https://media.licdn.com/dms/image/C4D03AQHQtxBLy9t63w/profile-displayphoto-shrink_800_800/0/1563041153318?e=1676505600&v=beta&t=s2BOWv9cVwincpckSSU7XXcgiQM9YKvm9Lrtr5Ygy9A'
 							}
-							name={'Jane Cooper'}
-							title={'CEO at ABC Corporation'}
+							name={'Andreas Petersen'}
+							title={'Co-founder of BHelpful'}
 						/>
 					</Testimonial>
 					<Testimonial>
@@ -129,36 +129,34 @@ export default function WithSpeechBubbles() {
 								Intuitive Design
 							</TestimonialHeading>
 							<TestimonialText>
-								Lorem ipsum dolor sit amet, consectetur
-								adipiscing elit. Auctor neque sed imperdiet nibh
-								lectus feugiat nunc sem.
+								I love how easy it is to use and how intuitive
+								the design is.
 							</TestimonialText>
 						</TestimonialContent>
 						<TestimonialAvatar
 							src={
-								'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+								'https://media.licdn.com/dms/image/C4D03AQHQtxBLy9t63w/profile-displayphoto-shrink_800_800/0/1563041153318?e=1676505600&v=beta&t=s2BOWv9cVwincpckSSU7XXcgiQM9YKvm9Lrtr5Ygy9A'
 							}
-							name={'Jane Cooper'}
-							title={'CEO at ABC Corporation'}
+							name={'Andreas Petersen'}
+							title={'Co-founder of BHelpful'}
 						/>
 					</Testimonial>
 					<Testimonial>
 						<TestimonialContent>
 							<TestimonialHeading>
-								Mindblowing Service
+								Easy Planning
 							</TestimonialHeading>
 							<TestimonialText>
-								Lorem ipsum dolor sit amet, consectetur
-								adipiscing elit. Auctor neque sed imperdiet nibh
-								lectus feugiat nunc sem.
+								It is amazing how easy it is to plan and
+								prioritize my wishlist.
 							</TestimonialText>
 						</TestimonialContent>
 						<TestimonialAvatar
 							src={
-								'https://images.unsplash.com/photo-1586297135537-94bc9ba060aa?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80'
+								'https://media.licdn.com/dms/image/C4D03AQHQtxBLy9t63w/profile-displayphoto-shrink_800_800/0/1563041153318?e=1676505600&v=beta&t=s2BOWv9cVwincpckSSU7XXcgiQM9YKvm9Lrtr5Ygy9A'
 							}
-							name={'Jane Cooper'}
-							title={'CEO at ABC Corporation'}
+							name={'Andreas Petersen'}
+							title={'Co-founder of BHelpful'}
 						/>
 					</Testimonial>
 				</Stack>

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { motion } from 'framer-motion';
 import Head from 'next/head';
@@ -14,7 +14,7 @@ type ArticleLayoutProps = {
 	title?: string;
 };
 
-const Content = ({ children, title }: ArticleLayoutProps) => (
+export const Content = ({ children, title }: ArticleLayoutProps) => (
 	<motion.article
 		initial="hidden"
 		animate="enter"
@@ -33,5 +33,3 @@ const Content = ({ children, title }: ArticleLayoutProps) => (
 		</>
 	</motion.article>
 );
-
-export default Content;

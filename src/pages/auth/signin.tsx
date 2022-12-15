@@ -17,8 +17,9 @@ import { getProviders, getSession, signIn } from 'next-auth/react';
 import { useState } from 'react';
 import type { IconType } from 'react-icons';
 import { FaDiscord, FaGoogle } from 'react-icons/fa';
+import NextLink from 'next/link';
 
-import Content from '../../components/layouts/content';
+import { Content } from '../../components/layouts/Content';
 
 type formButtonProps = {
 	provider: any;
@@ -84,7 +85,10 @@ export default function SimpleCard({ providers }: { providers: any }) {
 						</Heading>
 						<Text fontSize={'lg'} color={'gray.600'}>
 							to enjoy all of our cool{' '}
-							<Link color={'blue.400'}>features</Link> ✌️
+							<Link as={ NextLink } color={'blue.400'} href={'/features'}>
+								features
+							</Link>{' '}
+							✌️
 						</Text>
 					</Stack>
 					<Box
