@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider     = "mysql"
   // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
   // Further reading:
   // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
   // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-  url      = env("DATABASE_URL")
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -38,6 +38,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -46,17 +47,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
+  @@index([userId])
 }
 
 model VerificationToken {
@@ -70,7 +62,53 @@ model VerificationToken {
 model ShortLink {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  url String @db.VarChar(2000)
-  slug String @unique
+  url       String   @db.VarChar(2000)
+  slug      String   @unique
+
   @@index(slug)
+}
+
+model User {
+  id              String     @id @default(cuid())
+  name            String?
+  email           String?    @unique
+  password        String?
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  wishes          Wish[]
+  wishLists       WishList[] @relation("WishLists")
+  sharedWishLists WishList[] @relation("SharedWishLists")
+}
+
+model Wish {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String
+  price       Int
+  url         String
+  creator     User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId   String
+  wishList    WishList @relation(fields: [wishListId], references: [id], onDelete: Cascade)
+  wishListId  String
+
+  @@index([creatorId])
+  @@index([wishListId])
+}
+
+model WishList {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  creatorId   String
+  creator     User     @relation(name: "WishLists", fields: [creatorId], references: [id], onDelete: Cascade)
+  sharedWith  User[]   @relation(name: "SharedWishLists")
+  name        String
+  description String
+  wishes      Wish[]
+
+  @@index([creatorId])
 }

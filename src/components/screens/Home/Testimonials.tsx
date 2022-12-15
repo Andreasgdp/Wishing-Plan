@@ -112,7 +112,7 @@ export function TestemonialSection() {
 							<TestimonialText>
 								Easy to use and very intuitive. I love how I can
 								easily collaborate others creating shared
-								wishlists.
+								wishLists.
 							</TestimonialText>
 						</TestimonialContent>
 						<TestimonialAvatar
@@ -148,7 +148,7 @@ export function TestemonialSection() {
 							</TestimonialHeading>
 							<TestimonialText>
 								It is amazing how easy it is to plan and
-								prioritize my wishlist.
+								prioritize my wishList.
 							</TestimonialText>
 						</TestimonialContent>
 						<TestimonialAvatar
