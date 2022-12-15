@@ -8,7 +8,7 @@ const About = () => {
 		<Content>
 			<Container maxW="container.xl">
 				<Head>
-					<title>About</title>
+					<title>Features</title>
 				</Head>
 				<Box
 					display="flex"
@@ -18,7 +18,7 @@ const About = () => {
 					height="100vh"
 				>
 					<Text fontSize="2xl" fontWeight="bold">
-						This is the about page for Wishing Plan.
+						This is the features page for Wishing Plan.
 					</Text>
 					<Text fontSize="xl" fontWeight="medium">
 						...

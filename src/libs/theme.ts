@@ -5,7 +5,7 @@ const styles: Styles = {
 	global: (props: any) => ({
 		body: {
 			// Light, dark
-			bg: mode('#ffffff', '#22272E')(props),
+			bg: mode('#ffffff', 'gray.800')(props),
 		},
 	}),
 };
@@ -32,7 +32,7 @@ const components = {
 	},
 	Link: {
 		baseStyle: (props: any) => ({
-			color: mode('#3d7aed', '#ff63c3')(props),
+			color: mode('#bb71e8', '#ba3f86')(props),
 			textUnderlineOffset: 3,
 		}),
 	},
@@ -43,7 +43,8 @@ const fonts = {
 };
 
 const colors = {
-	navBarPrimary: '#b794f4',
+	navBarPrimaryLight: '#9ee871',
+	navBarPrimaryDark: '#3fba73',
 };
 
 const config = {

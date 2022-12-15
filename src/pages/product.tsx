@@ -1,16 +1,20 @@
 import { type NextPage } from 'next';
-import Hero from '../components/hero-section';
-import Testimonials from '../components/testimonials';
 
-import Content from '../components/layouts/content';
+import { HomeScreen } from '@components/screens/Home/HomeScreen';
+import Head from 'next/head';
 
 const Product: NextPage = () => {
 	return (
 		<>
-			<Content>
-				<Hero></Hero>
-				<Testimonials></Testimonials>
-			</Content>
+			<Head>
+				<title>Wishing Plan - Product</title>
+				<meta
+					name="description"
+					content="landing page for wishing plan"
+				/>
+			</Head>
+
+			<HomeScreen />
 		</>
 	);
 };

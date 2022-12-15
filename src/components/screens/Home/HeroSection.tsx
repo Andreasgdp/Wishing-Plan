@@ -1,5 +1,6 @@
 import type { IconProps } from '@chakra-ui/react';
 import {
+	AspectRatio,
 	Box,
 	Button,
 	Container,
@@ -15,8 +16,15 @@ import {
 	useColorModeValue,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useState } from 'react';
 
-export default function CallToActionWithVideo() {
+export function HeroSection() {
+	// boolean variable to check if play button is clicked
+	const [play, setPlay] = useState(false);
+	const url = play
+		? `https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1`
+		: `https://www.youtube.com/embed/dQw4w9WgXcQ`;
+
 	return (
 		<Container maxW={'7xl'}>
 			<Stack
@@ -26,38 +34,63 @@ export default function CallToActionWithVideo() {
 				direction={{ base: 'column', md: 'row' }}
 			>
 				<Stack flex={1} spacing={{ base: 5, md: 10 }}>
+					{/* space the items in Heading a bit */}
 					<Heading
 						lineHeight={1.1}
 						fontWeight={600}
 						fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
 					>
-						<Text
-							as={'span'}
-							position={'relative'}
-							_after={{
-								content: "''",
-								width: 'full',
-								height: '30%',
-								position: 'absolute',
-								bottom: 1,
-								left: 0,
-								bg: 'red.400',
-								zIndex: -1,
-							}}
-						>
-							Plan wishes,
-						</Text>
-						<br />
-						<Text as={'span'} color={'red.400'}>
-							find what is most important
-						</Text>
+						<Flex flexDirection={'column'} gap={10}>
+							<Text
+								as={'span'}
+								position={'relative'}
+								_after={{
+									content: "''",
+									width: '6.1em',
+									height: '10%',
+									position: 'absolute',
+									bottom: -1,
+									left: 0,
+									bg: useColorModeValue(
+										'green.300',
+										'green.500'
+									),
+									zIndex: -1,
+									borderRadius(theme) {
+										return `${theme.radii.full}`;
+									},
+								}}
+							>
+								Plan wishes,
+							</Text>
+							<br />
+							<Text
+								as={'span'}
+								color={useColorModeValue(
+									'green.300',
+									'green.500'
+								)}
+								style={{ marginTop: '-4rem' }}
+							>
+								find what is most important
+							</Text>
+						</Flex>
 					</Heading>
-					<Text color={'gray.500'}>
-						Snippy is a rich coding snippets app that lets you
-						create your own code snippets, categorize them, and even
-						sync them in the cloud so you can use them anywhere. All
-						that is free!
-					</Text>
+					<Flex flexDirection={'column'} gap={2}>
+						<Text color={'gray.500'}>
+							Wishing Plan allows you to save your wishes and plan
+							when you can buy them based on the price and the
+							amount of money you set aside each month. The app
+							will then track the your monthly savings and
+							calculate when you are able to purchase your wishes.
+						</Text>
+						<Text color={'gray.500'}>
+							You can also view a dashboard with a summary of
+							their wishes and their progress towards achieving
+							them. This app is useful for helping you save money
+							and plan for their future purchases.
+						</Text>
+					</Flex>
 					<Stack
 						spacing={{ base: 4, sm: 6 }}
 						direction={{ base: 'column', sm: 'row' }}
@@ -69,8 +102,13 @@ export default function CallToActionWithVideo() {
 								fontWeight={'normal'}
 								px={6}
 								colorScheme={'red'}
-								bg={'red.400'}
-								_hover={{ bg: 'red.500' }}
+								bg={useColorModeValue('green.300', 'green.500')}
+								_hover={{
+									bg: useColorModeValue(
+										'green.200',
+										'green.700'
+									),
+								}}
 							>
 								Get started
 							</Button>
@@ -83,6 +121,9 @@ export default function CallToActionWithVideo() {
 							leftIcon={
 								<PlayIcon h={4} w={4} color={'gray.300'} />
 							}
+							onClick={() => {
+								setPlay(true);
+							}}
 						>
 							How It Works
 						</Button>
@@ -102,7 +143,7 @@ export default function CallToActionWithVideo() {
 						top={'-20%'}
 						left={0}
 						zIndex={-1}
-						color={useColorModeValue('red.50', 'red.400')}
+						color={useColorModeValue('purple.200', 'pink.700')}
 					/>
 					<Box
 						position={'relative'}
@@ -123,17 +164,33 @@ export default function CallToActionWithVideo() {
 							left={'50%'}
 							top={'50%'}
 							transform={'translateX(-50%) translateY(-50%)'}
+							onClick={() => {
+								setPlay(true);
+							}}
 						/>
-						<Image
-							alt={'Hero Image'}
-							fit={'cover'}
-							align={'center'}
-							w={'100%'}
-							h={'100%'}
-							src={
-								'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80'
-							}
-						/>
+						{(!play && (
+							<Image
+								alt={'Hero Image'}
+								fit={'cover'}
+								align={'center'}
+								w={'100%'}
+								h={'100%'}
+								src={
+									'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=800&q=80'
+								}
+								onClick={() => {
+									setPlay(true);
+								}}
+							/>
+						)) || (
+							<AspectRatio maxH="300px" ratio={1}>
+								<iframe
+									title="Showcase Video"
+									src={url}
+									allowFullScreen
+								/>
+							</AspectRatio>
+						)}
 					</Box>
 				</Flex>
 			</Stack>

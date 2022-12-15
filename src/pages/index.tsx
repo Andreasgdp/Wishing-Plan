@@ -4,7 +4,7 @@ import styles from './index.module.css';
 
 import type { CtxOrReq } from 'next-auth/client/_utils';
 import dynamic from 'next/dynamic';
-import Content from '../components/layouts/content';
+import { Content } from '../components/layouts/Content';
 import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
@@ -28,9 +28,12 @@ const Home: NextPage = () => {
 
 export default Home;
 
-const CreateLinkForm = dynamic(() => import('../components/create-link'), {
-	ssr: false,
-});
+const CreateLinkForm = dynamic(
+	() => import('../components/common/CreateLink'),
+	{
+		ssr: false,
+	}
+);
 
 const AuthShowcase: React.FC = () => {
 	const { data: sessionData } = useSession();
@@ -68,7 +71,7 @@ export async function getServerSideProps(context: CtxOrReq | undefined) {
 		return {
 			redirect: {
 				destination: '/product',
-				permanent: true,
+				permanent: false,
 			},
 		};
 	}

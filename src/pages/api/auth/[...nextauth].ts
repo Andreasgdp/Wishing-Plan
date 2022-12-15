@@ -12,8 +12,6 @@ export const authOptions: NextAuthOptions = {
 	// Include user.id on session
 	callbacks: {
 		async signIn({ user, account, profile, email, credentials }) {
-			console.log('signIn', user, account, profile, email, credentials);
-
 			if (user.name) {
 				return true;
 			} else {

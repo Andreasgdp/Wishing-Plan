@@ -8,7 +8,7 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
-import Content from '../../components/layouts/content';
+import { Content } from '../../components/layouts/Content';
 
 type ForgotPasswordFormInputs = {
 	email: string;
@@ -16,11 +16,7 @@ type ForgotPasswordFormInputs = {
 
 export default function ForgotPasswordForm(): JSX.Element {
 	return (
-		<Flex
-			minH={'100vh'}
-			align={'center'}
-			justify={'center'}
-		>
+		<Flex minH={'100vh'} align={'center'} justify={'center'}>
 			<Content>
 				<Stack
 					spacing={4}

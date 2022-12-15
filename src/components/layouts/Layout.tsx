@@ -4,8 +4,8 @@ import { Box } from '@chakra-ui/react';
 import Head from 'next/head';
 
 import { useRouter } from 'next/router';
-import Footer from '../footer';
-import Navbar from '../navbar';
+import Navbar from '../common/Header/Navbar';
+import Footer from '../common/Footer/Footer';
 
 type LayoutProps = {
 	children: ReactNode;
@@ -25,7 +25,7 @@ const Layout = ({ children }: LayoutProps) => {
 
 			<Navbar path={router.asPath} />
 
-			<div style={{ paddingTop: '6rem' }}>{children}</div>
+			<div style={{ paddingTop: '3.5rem' }}>{children}</div>
 
 			<Footer />
 		</Box>

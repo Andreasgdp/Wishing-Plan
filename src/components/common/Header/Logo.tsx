@@ -22,10 +22,14 @@ const LogoBox = styled.span`
 const Logo = () => {
 	const logoImg = `/logo${useColorModeValue('-light', '-dark')}.svg`;
 	return (
-		<Link href="/">
+		<Link href="/" style={{ display: 'flex' }}>
 			<LogoBox>
 				<Image src={logoImg} width={25} height={25} alt="logo" />
-				<Text color={useColorModeValue('gray.800', 'white.900')} ml={3}>
+				<Text
+					color={useColorModeValue('gray.700', 'white.900')}
+					ml={3}
+					letterSpacing={'tight'}
+				>
 					Wishing Plan
 				</Text>
 			</LogoBox>
