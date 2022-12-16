@@ -1,5 +1,7 @@
 import {
 	Button,
+	Center,
+	Container,
 	FormControl,
 	FormErrorMessage,
 	FormLabel,
@@ -48,63 +50,72 @@ export const DashboardScreen = () => {
 
 	return (
 		<>
-			<Button onClick={onOpen}>Create a WishList</Button>
+			{' '}
+			<Container maxW="container.xl">
+				<Center h="100px">
+					<Button onClick={onOpen}>Create a WishList</Button>
+				</Center>
+				{/* TODO: replace with skeleton setup in future */}
+				<EmptyStateWrapper
+					isLoading={isLoading}
+					data={wishLists}
+					EmptyComponent={<p>Empty</p>}
+					NonEmptyComponent={
+						<WishListsList
+							refreshListFunc={refetchWishLists}
+							wishLists={wishLists ?? []}
+						/>
+					}
+				/>
+				<FormErrorMessage>Description is required.</FormErrorMessage>
+				<Modal
+					isOpen={isOpen}
+					onClose={onClose}
+					onCloseComplete={refetchWishLists}
+				>
+					<ModalOverlay />
 
-			<EmptyStateWrapper
-				isLoading={isLoading}
-				data={wishLists}
-				EmptyComponent={<p>Empty</p>}
-				NonEmptyComponent={
-					<WishListsList wishLists={wishLists ?? []} />
-				}
-			/>
-			<FormErrorMessage>Description is required.</FormErrorMessage>
+					<ModalContent>
+						<ModalHeader>
+							<ModalCloseButton />
+						</ModalHeader>
 
-			<Modal
-				isOpen={isOpen}
-				onClose={onClose}
-				onCloseComplete={refetchWishLists}
-			>
-				<ModalOverlay />
+						<ModalBody>
+							<form id="new-note" onSubmit={onSubmit}>
+								<FormControl isRequired>
+									<FormLabel>Name of WishList</FormLabel>
+									<Input
+										id="name"
+										type="text"
+										{...register('name', {
+											required: true,
+										})}
+									/>
+								</FormControl>
+								<FormControl isRequired>
+									<FormLabel>Describe your</FormLabel>
+									<Input
+										id="description"
+										type="text"
+										{...register('description', {
+											required: true,
+										})}
+									/>
+									<FormErrorMessage>
+										Description is required.
+									</FormErrorMessage>
+								</FormControl>
+							</form>
+						</ModalBody>
 
-				<ModalContent>
-					<ModalHeader>
-						<ModalCloseButton />
-					</ModalHeader>
-
-					<ModalBody>
-						<form id="new-note" onSubmit={onSubmit}>
-							<FormControl isRequired>
-								<FormLabel>Name of WishList</FormLabel>
-								<Input
-									id="name"
-									type="text"
-									{...register('name', { required: true })}
-								/>
-							</FormControl>
-							<FormControl isRequired>
-								<FormLabel>Describe your</FormLabel>
-								<Input
-									id="description"
-									type="text"
-									{...register('description', {
-										required: true,
-									})}
-								/>
-								<FormErrorMessage>
-									Description is required.
-								</FormErrorMessage>
-							</FormControl>
-						</form>
-					</ModalBody>
-
-					<ModalFooter>
-						<Button type="submit" form="new-note">
-							Submit
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+						<ModalFooter>
+							<Button type="submit" form="new-note">
+								Submit
+							</Button>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>{' '}
+			</Container>
 		</>
 	);
 };

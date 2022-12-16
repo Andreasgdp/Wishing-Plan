@@ -1,15 +1,30 @@
-import { WishList } from '@prisma/client';
-import React from 'react';
+import { Container, SimpleGrid } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import type { WishList } from '@prisma/client';
 import { WishListCard } from './WishListCard';
 
-export const WishListsList = ({ wishLists }: { wishLists: WishList[] }) => {
+const CircleImage = styled.img`
+	border-radius: 50%;
+`;
+
+export const WishListsList = ({
+	wishLists,
+	refreshListFunc,
+}: {
+	wishLists: WishList[];
+	refreshListFunc?: () => void;
+}) => {
 	return (
-		<div className="flex flex-col gap-4">
-			<ul className="grid grid-cols-3 gap-4">
+		<Container maxW="container.xl">
+			<SimpleGrid minChildWidth="20rem" spacing="40px">
 				{wishLists.map((wishList) => (
-					<WishListCard key={wishList.id} wishList={wishList} />
+					<WishListCard
+						refreshListFunc={refreshListFunc}
+						key={wishList.id}
+						wishList={wishList}
+					/>
 				))}
-			</ul>
-		</div>
+			</SimpleGrid>
+		</Container>
 	);
 };
