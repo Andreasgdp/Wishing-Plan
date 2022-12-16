@@ -18,7 +18,7 @@ type DeleteAlertProps = {
 
 export const DeleteAlert = (props: DeleteAlertProps) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const cancelRef = useRef();
+	const cancelRef = useRef<HTMLButtonElement>(null);
 
 	// onDeletePressed
 	const onDeletePressed = () => {
