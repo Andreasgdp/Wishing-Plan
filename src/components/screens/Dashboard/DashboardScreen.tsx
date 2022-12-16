@@ -20,13 +20,13 @@ import { trpc } from '@utils/trpc';
 import { useForm } from 'react-hook-form';
 import { WishListsList } from './WishListsList';
 
-type CreateWishListForm = {
+export type WishListForm = {
 	name: string;
 	description: string;
 };
 
 export const DashboardScreen = () => {
-	const { register, handleSubmit, reset } = useForm<CreateWishListForm>();
+	const { register, handleSubmit, reset } = useForm<WishListForm>();
 
 	const {
 		data: wishLists,
@@ -93,7 +93,9 @@ export const DashboardScreen = () => {
 									/>
 								</FormControl>
 								<FormControl isRequired>
-									<FormLabel>Describe your</FormLabel>
+									<FormLabel>
+										Describe your WishList
+									</FormLabel>
 									<Input
 										id="description"
 										type="text"
@@ -114,7 +116,7 @@ export const DashboardScreen = () => {
 							</Button>
 						</ModalFooter>
 					</ModalContent>
-				</Modal>{' '}
+				</Modal>
 			</Container>
 		</>
 	);

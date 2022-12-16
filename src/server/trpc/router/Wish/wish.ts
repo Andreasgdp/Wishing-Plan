@@ -21,7 +21,6 @@ export const wishRouter = router({
 	create: protectedProcedure
 		.input(
 			z.object({
-				creatorId: z.string(),
 				title: z.string(),
 				description: z.string(),
 				price: z.number(),
@@ -30,10 +29,12 @@ export const wishRouter = router({
 			})
 		)
 		.mutation(({ input, ctx }) => {
+			const userId = ctx.session?.user?.id;
+
 			return ctx.prisma.wish.create({
 				data: {
 					creator: {
-						connect: { id: input.creatorId },
+						connect: { id: userId },
 					},
 					title: input.title,
 					description: input.description,

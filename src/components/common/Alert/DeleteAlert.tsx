@@ -28,7 +28,7 @@ export const DeleteAlert = (props: DeleteAlertProps) => {
 
 	return (
 		<>
-			<Button colorScheme="red" onClick={onOpen}>
+			<Button variant={'ghost'} colorScheme="red" onClick={onOpen}>
 				Delete {props.typeToDelete}
 			</Button>
 
