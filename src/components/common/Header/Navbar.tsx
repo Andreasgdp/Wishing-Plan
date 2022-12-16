@@ -17,6 +17,7 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
+import { signOut, useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import { IoLogoGithub } from 'react-icons/io5';
 import ThemeToggleButton from '../Theme/ThemeToggleButton';
@@ -83,6 +84,7 @@ const Navbar = (props: NavbarProps) => {
 
 export default Navbar;
 function FullMenu({ path }: { path: string }) {
+	const { data: sessionData } = useSession();
 	return (
 		<Stack
 			direction={{ base: 'column', md: 'row' }}
@@ -108,6 +110,7 @@ function FullMenu({ path }: { path: string }) {
 				<IoLogoGithub />
 				<Text style={{ marginTop: '-2px' }}>Source</Text>
 			</Link>
+			{sessionData && <button onClick={() => signOut()}>Sign Out</button>}
 		</Stack>
 	);
 }
