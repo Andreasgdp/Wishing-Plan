@@ -11,7 +11,7 @@ import { prisma } from '@server/db/client';
 export const authOptions: NextAuthOptions = {
 	// Include user.id on session
 	callbacks: {
-		async signIn({ user, account, profile, email, credentials }) {
+		async signIn({ user }) {
 			if (user.name) {
 				return true;
 			} else {
