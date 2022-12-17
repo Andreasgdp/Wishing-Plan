@@ -16,6 +16,7 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { EmptyStateWrapper } from '@components/EmptyStateWrapper';
+import { Content } from '@components/layouts/Content';
 import { trpc } from '@utils/trpc';
 import { useForm } from 'react-hook-form';
 import { WishListsList } from './WishListsList';
@@ -50,74 +51,77 @@ export const DashboardScreen = () => {
 
 	return (
 		<>
-			{' '}
-			<Container maxW="container.xl">
-				<Center h="100px">
-					<Button onClick={onOpen}>Create a WishList</Button>
-				</Center>
-				{/* TODO: replace with skeleton setup in future */}
-				<EmptyStateWrapper
-					isLoading={isLoading}
-					data={wishLists}
-					EmptyComponent={<p>Empty</p>}
-					NonEmptyComponent={
-						<WishListsList
-							refreshListFunc={refetchWishLists}
-							wishLists={wishLists ?? []}
-						/>
-					}
-				/>
-				<FormErrorMessage>Description is required.</FormErrorMessage>
-				<Modal
-					isOpen={isOpen}
-					onClose={onClose}
-					onCloseComplete={refetchWishLists}
-				>
-					<ModalOverlay />
+			<Content>
+				<Container maxW="container.xl">
+					<Center h="100px">
+						<Button onClick={onOpen}>Create a WishList</Button>
+					</Center>
+					{/* TODO: replace with skeleton setup in future */}
+					<EmptyStateWrapper
+						isLoading={isLoading}
+						data={wishLists}
+						EmptyComponent={<p>Empty</p>}
+						NonEmptyComponent={
+							<WishListsList
+								refreshListFunc={refetchWishLists}
+								wishLists={wishLists ?? []}
+							/>
+						}
+					/>
+					<FormErrorMessage>
+						Description is required.
+					</FormErrorMessage>
+					<Modal
+						isOpen={isOpen}
+						onClose={onClose}
+						onCloseComplete={refetchWishLists}
+					>
+						<ModalOverlay />
 
-					<ModalContent>
-						<ModalHeader>
-							<ModalCloseButton />
-						</ModalHeader>
+						<ModalContent>
+							<ModalHeader>
+								<ModalCloseButton />
+							</ModalHeader>
 
-						<ModalBody>
-							<form id="new-note" onSubmit={onSubmit}>
-								<FormControl isRequired>
-									<FormLabel>Name of WishList</FormLabel>
-									<Input
-										id="name"
-										type="text"
-										{...register('name', {
-											required: true,
-										})}
-									/>
-								</FormControl>
-								<FormControl isRequired>
-									<FormLabel>
-										Describe your WishList
-									</FormLabel>
-									<Input
-										id="description"
-										type="text"
-										{...register('description', {
-											required: true,
-										})}
-									/>
-									<FormErrorMessage>
-										Description is required.
-									</FormErrorMessage>
-								</FormControl>
-							</form>
-						</ModalBody>
+							<ModalBody>
+								<form id="new-note" onSubmit={onSubmit}>
+									<FormControl isRequired>
+										<FormLabel>Name of WishList</FormLabel>
+										<Input
+											id="name"
+											type="text"
+											{...register('name', {
+												required: true,
+											})}
+										/>
+									</FormControl>
+									<FormControl isRequired>
+										<FormLabel>
+											Describe your WishList
+										</FormLabel>
+										<Input
+											id="description"
+											type="text"
+											{...register('description', {
+												required: true,
+											})}
+										/>
+										<FormErrorMessage>
+											Description is required.
+										</FormErrorMessage>
+									</FormControl>
+								</form>
+							</ModalBody>
 
-						<ModalFooter>
-							<Button type="submit" form="new-note">
-								Submit
-							</Button>
-						</ModalFooter>
-					</ModalContent>
-				</Modal>
-			</Container>
+							<ModalFooter>
+								<Button type="submit" form="new-note">
+									Submit
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
+				</Container>
+			</Content>
 		</>
 	);
 };

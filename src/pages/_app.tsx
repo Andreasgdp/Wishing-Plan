@@ -49,6 +49,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 							sizes="16x16"
 							href="/favicon/light/favicon-16x16.png"
 						/>
+						<link rel="manifest" href="/favicon/light/site.webmanifest" />
 					</>
 				)}
 				{prefersDarkMode() && (
@@ -74,6 +75,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 							sizes="16x16"
 							href="/favicon/dark/favicon-16x16.png"
 						/>
+						<link rel="manifest" href="/favicon/dark/site.webmanifest" />
 					</>
 				)}
 			</Head>
@@ -81,7 +83,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 				<Fonts />
 				<Layout>
 					<AnimatePresence
-						exitBeforeEnter
+						mode="wait"
 						initial={true}
 						onExitComplete={() => {
 							if (typeof window !== 'undefined') {

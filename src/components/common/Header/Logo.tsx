@@ -24,7 +24,8 @@ const Logo = () => {
 	return (
 		<Link href="/" style={{ display: 'flex' }}>
 			<LogoBox>
-				<Image src={logoImg} width={25} height={25} alt="logo" />
+				{/* The with is set to 25.68 to medigate warning of inproper scaling based on the ratio of the svg file. */}
+				<Image src={logoImg} width={25.68} height={25} alt="logo" />
 				<Text
 					color={useColorModeValue('gray.700', 'white.900')}
 					ml={3}
