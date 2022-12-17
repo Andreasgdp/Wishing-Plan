@@ -8,6 +8,7 @@ export default class Document extends NextDocument {
 		return (
 			<Html lang="en">
 				<Head />
+				<link rel="manifest" href="/manifest.json" />
 				<meta name="Guldberg Portfolio" content="PWA App" />
 				<meta name="apple-mobile-web-app-capable" content="yes" />
 				<meta
@@ -29,8 +30,6 @@ export default class Document extends NextDocument {
 					name="viewport"
 					content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
 				/>
-
-				
 
 				<link
 					rel="stylesheet"
