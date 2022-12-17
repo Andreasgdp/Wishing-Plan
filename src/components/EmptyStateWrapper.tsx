@@ -1,6 +1,7 @@
+import { Center } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import type { ReactNode } from 'react';
-import { ThreeDots } from 'react-loader-spinner';
+import { Triangle } from 'react-loader-spinner';
 
 export const EmptyStateWrapper = ({
 	isLoading,
@@ -16,14 +17,16 @@ export const EmptyStateWrapper = ({
 	return (
 		<div>
 			{isLoading ? (
-				<ThreeDots
-					height="80"
-					width="80"
-					radius="9"
-					color="#6466f1"
-					ariaLabel="three-dots-loading"
-					visible={true}
-				/>
+				<Center>
+					<Triangle
+						height="100"
+						width="100"
+						color="#ba3f86"
+						ariaLabel="triangle-loading"
+						wrapperStyle={{}}
+						visible={true}
+					/>
+				</Center>
 			) : isEmpty(data) ? (
 				EmptyComponent
 			) : (
