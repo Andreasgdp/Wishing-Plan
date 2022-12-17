@@ -18,6 +18,7 @@ import {
 	NumberInput,
 	NumberInputField,
 	NumberInputStepper,
+	Tag,
 	useDisclosure,
 } from '@chakra-ui/react';
 import { EmptyStateWrapper } from '@components/EmptyStateWrapper';
@@ -56,6 +57,7 @@ export const WishListScreen = (props: WishListScreenProps) => {
 	const createWish = trpc.wish.create.useMutation();
 
 	const onSubmit = handleSubmit(async (data) => {
+		onClose();
 		await createWish.mutateAsync({
 			title: data.title,
 			description: data.description,
@@ -64,7 +66,6 @@ export const WishListScreen = (props: WishListScreenProps) => {
 			wishListId: props.wishListId,
 		});
 		reset();
-		onClose();
 	});
 
 	// modal
@@ -83,7 +84,17 @@ export const WishListScreen = (props: WishListScreenProps) => {
 					<EmptyStateWrapper
 						isLoading={isLoading}
 						data={wishes}
-						EmptyComponent={<p>Empty</p>}
+						EmptyComponent={
+							<Center>
+								<Tag
+									size={'lg'}
+									variant="solid"
+									colorScheme="teal"
+								>
+									No Wishes Yet
+								</Tag>
+							</Center>
+						}
 						NonEmptyComponent={
 							<WishesList
 								refreshListFunc={refetchWishLists}

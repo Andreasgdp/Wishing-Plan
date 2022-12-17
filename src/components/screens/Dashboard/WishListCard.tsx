@@ -45,13 +45,13 @@ export const WishListCard = ({
 	const editWishList = trpc.wishList.update.useMutation();
 
 	const onSubmit = handleSubmit(async (data) => {
+		onClose();
 		await editWishList.mutateAsync({
 			id: wishList.id,
 			name: data.name,
 			description: data.description,
 		});
 		reset();
-		onClose();
 	});
 
 	const onOpenEdit = () => {
@@ -72,11 +72,28 @@ export const WishListCard = ({
 				<CardBody>
 					<Text>{wishList.description}</Text>
 				</CardBody>
-				<CardFooter gap={3} justifyContent="space-evenly">
+				<CardFooter
+					justify="start"
+					flexWrap="wrap"
+					sx={{
+						'& > button': {
+							minW: '2rem',
+						},
+					}}
+				>
 					<Link href={`/wishlists/${wishList.id}`}>
-						<Button>View here</Button>
+						<Button
+							mr={4}
+							mb={4}
+							colorScheme="purple"
+							variant="solid"
+						>
+							View here
+						</Button>
 					</Link>
-					<Button onClick={onOpenEdit}>Edit</Button>
+					<Button mr={2} mb={2} variant="ghost" onClick={onOpenEdit}>
+						Edit
+					</Button>
 
 					<DeleteAlert
 						typeToDelete="WishList"

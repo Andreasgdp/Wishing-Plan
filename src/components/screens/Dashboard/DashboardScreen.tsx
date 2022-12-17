@@ -13,6 +13,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
+	Tag,
 	useDisclosure,
 } from '@chakra-ui/react';
 import { EmptyStateWrapper } from '@components/EmptyStateWrapper';
@@ -38,12 +39,12 @@ export const DashboardScreen = () => {
 	const createWishList = trpc.wishList.create.useMutation();
 
 	const onSubmit = handleSubmit(async (data) => {
+		onClose();
 		await createWishList.mutateAsync({
 			name: data.name,
 			description: data.description,
 		});
 		reset();
-		onClose();
 	});
 
 	// modal
@@ -60,7 +61,17 @@ export const DashboardScreen = () => {
 					<EmptyStateWrapper
 						isLoading={isLoading}
 						data={wishLists}
-						EmptyComponent={<p>Empty</p>}
+						EmptyComponent={
+							<Center>
+								<Tag
+									size={'lg'}
+									variant="solid"
+									colorScheme="teal"
+								>
+									No WishLists
+								</Tag>
+							</Center>
+						}
 						NonEmptyComponent={
 							<WishListsList
 								refreshListFunc={refetchWishLists}

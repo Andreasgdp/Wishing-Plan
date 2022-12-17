@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { Box } from '@chakra-ui/react';
 import Head from 'next/head';
 
 import { useRouter } from 'next/router';
-import Navbar from '../common/Header/Navbar';
 import Footer from '../common/Footer/Footer';
+import Navbar from '../common/Header/Navbar';
 
 type LayoutProps = {
 	children: ReactNode;
@@ -25,7 +25,9 @@ const Layout = ({ children }: LayoutProps) => {
 
 			<Navbar path={router.asPath} />
 
-			<div style={{ paddingTop: '3.5rem' }}>{children}</div>
+			<div style={{ paddingTop: '3.5rem', minHeight: '100vh' }}>
+				{children}
+			</div>
 
 			<Footer />
 		</Box>

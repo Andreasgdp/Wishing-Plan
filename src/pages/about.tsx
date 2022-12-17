@@ -1,4 +1,4 @@
-import { Box, Container, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import { Content } from '@components/layouts/Content';
 import Head from 'next/head';
 
@@ -6,25 +6,23 @@ import Head from 'next/head';
 const About = () => {
 	return (
 		<Content>
-			<Container maxW="container.xl">
+			<Box
+				display="flex"
+				flexDirection="column"
+				alignItems="center"
+				justifyContent="center"
+				height="100vh"
+			>
 				<Head>
 					<title>About</title>
 				</Head>
-				<Box
-					display="flex"
-					flexDirection="column"
-					alignItems="center"
-					justifyContent="center"
-					height="100vh"
-				>
-					<Text fontSize="2xl" fontWeight="bold">
-						This is the about page for Wishing Plan.
-					</Text>
-					<Text fontSize="xl" fontWeight="medium">
-						...
-					</Text>
-				</Box>
-			</Container>
+				<Text fontSize="2xl" fontWeight="bold">
+					This is the about page for Wishing Plan.
+				</Text>
+				<Text fontSize="xl" fontWeight="medium">
+					...
+				</Text>
+			</Box>
 		</Content>
 	);
 };

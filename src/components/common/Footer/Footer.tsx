@@ -1,8 +1,10 @@
 import {
 	Box,
+	Center,
 	chakra,
 	Container,
 	Divider,
+	Flex,
 	Link,
 	Stack,
 	Text,
@@ -71,18 +73,18 @@ export default function SmallCentered() {
 				align={'center'}
 			>
 				<Logo />
-				<Stack direction={'row'} spacing={6}>
+				<Stack direction={['column', 'row']} spacing={6}>
 					<Link as={NextLink} href="/">
-						Home
+						<Center>Home</Center>
 					</Link>
 					<Link as={NextLink} href={'/about'}>
-						About
+						<Center>About</Center>
 					</Link>
 					<Link as={NextLink} href={'features'}>
-						Features
+						<Center>Features</Center>
 					</Link>
 					<Link as={NextLink} href={'contact'}>
-						Contact
+						<Center>Contact</Center>
 					</Link>
 				</Stack>
 			</Container>
@@ -101,8 +103,7 @@ export default function SmallCentered() {
 					justify={{ base: 'center', md: 'space-between' }}
 					align={{ base: 'center', md: 'center' }}
 				>
-					<Text>© 2022 Wishing Plan. All rights reserved</Text>
-					<Stack direction={'row'} spacing={6}>
+					<Flex gap={4}>
 						<SocialButton label={'Twitter'} href={'#'}>
 							<FaTwitter />
 						</SocialButton>
@@ -112,7 +113,11 @@ export default function SmallCentered() {
 						<SocialButton label={'Instagram'} href={'#'}>
 							<FaInstagram />
 						</SocialButton>
-					</Stack>
+					</Flex>
+
+					<Text justifyContent={'center'}>
+						© 2022 Wishing Plan. All rights reserved
+					</Text>
 				</Container>
 			</Box>
 		</Box>

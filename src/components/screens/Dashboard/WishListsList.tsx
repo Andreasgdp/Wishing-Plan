@@ -16,7 +16,7 @@ export const WishListsList = ({
 }) => {
 	return (
 		<Container maxW="container.xl">
-			<SimpleGrid minChildWidth="21rem" spacing="40px">
+			<SimpleGrid minChildWidth="11rem" spacing="40px">
 				{wishLists.map((wishList) => (
 					<WishListCard
 						refreshListFunc={refreshListFunc}

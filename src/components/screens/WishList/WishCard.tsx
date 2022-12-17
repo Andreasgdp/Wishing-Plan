@@ -1,6 +1,5 @@
 import {
 	Button,
-	ButtonGroup,
 	Card,
 	CardBody,
 	CardFooter,
@@ -66,6 +65,7 @@ export const WishCard = ({
 	const updateWish = trpc.wish.update.useMutation();
 
 	const onSubmit = handleSubmit(async (data) => {
+		onClose();
 		await updateWish.mutateAsync({
 			id: wish.id,
 			title: data.title,
@@ -75,7 +75,6 @@ export const WishCard = ({
 			wishListId: wish.wishListId,
 		});
 		reset();
-		onClose();
 	});
 
 	const onOpenEdit = () => {
@@ -110,34 +109,44 @@ export const WishCard = ({
 					</Stack>
 				</CardBody>
 				<Divider />
-				<CardFooter>
-					<ButtonGroup spacing="2">
-						{wish.url && (
-							<Button
-								colorScheme="purple"
-								variant="solid"
-								onClick={(e) => {
-									e.preventDefault();
-									window.open(wish.url, '_blank');
-								}}
-							>
-								Open link
-							</Button>
-						)}
-
+				<CardFooter
+					justify="start"
+					flexWrap="wrap"
+					sx={{
+						'& > button': {
+							minW: '2rem',
+						},
+					}}
+				>
+					{wish.url && (
 						<Button
-							variant="ghost"
+							mr={4}
+							mb={4}
 							colorScheme="purple"
-							onClick={onOpenEdit}
+							variant="solid"
+							onClick={(e) => {
+								e.preventDefault();
+								window.open(wish.url, '_blank');
+							}}
 						>
-							Edit
+							Open link
 						</Button>
-						<DeleteAlert
-							typeToDelete="Wish"
-							entityName={wish.title}
-							onDelete={onDelete}
-						/>
-					</ButtonGroup>
+					)}
+
+					<Button
+						mr={2}
+						mb={2}
+						variant="ghost"
+						colorScheme="purple"
+						onClick={onOpenEdit}
+					>
+						Edit
+					</Button>
+					<DeleteAlert
+						typeToDelete="Wish"
+						entityName={wish.title}
+						onDelete={onDelete}
+					/>
 				</CardFooter>
 				<Modal
 					isOpen={isOpen}
@@ -214,7 +223,7 @@ export const WishCard = ({
 							</Button>
 						</ModalFooter>
 					</ModalContent>
-				</Modal>{' '}
+				</Modal>
 			</Card>
 		</Center>
 	);

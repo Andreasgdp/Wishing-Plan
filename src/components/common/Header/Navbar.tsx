@@ -110,12 +110,21 @@ function FullMenu({ path }: { path: string }) {
 				<IoLogoGithub />
 				<Text style={{ marginTop: '-2px' }}>Source</Text>
 			</Link>
-			{sessionData && <button onClick={() => signOut()}>Sign Out</button>}
+			{sessionData && (
+				<button
+					style={{ marginTop: '-3px', marginLeft: '1.5rem' }}
+					onClick={() => signOut()}
+				>
+					Sign Out
+				</button>
+			)}
 		</Stack>
 	);
 }
 
 function CollapsedMenu() {
+	const { data: sessionData } = useSession();
+
 	return (
 		<Flex flex={1}>
 			<Spacer />
@@ -135,6 +144,13 @@ function CollapsedMenu() {
 						<MenuItem as={NextLink} href="/features">
 							Features
 						</MenuItem>
+						{sessionData && (
+							<MenuItem>
+								<button onClick={() => signOut()}>
+									Sign Out
+								</button>
+							</MenuItem>
+						)}
 						<MenuItem
 							as={Link}
 							href="https://github.com/Andreasgdp/Portfolio"
