@@ -2,7 +2,10 @@ import type { ReactNode } from 'react';
 
 import { HamburgerIcon } from '@chakra-ui/icons';
 import {
+	Avatar,
 	Box,
+	Button,
+	Center,
 	Container,
 	Flex,
 	Heading,
@@ -57,6 +60,7 @@ type NavbarProps = {
 
 const Navbar = (props: NavbarProps) => {
 	const { path } = props;
+	const { data: sessionData } = useSession();
 
 	return (
 		<Box
@@ -76,7 +80,30 @@ const Navbar = (props: NavbarProps) => {
 				</Box>
 				<FullMenu path={path} />
 
-				<CollapsedMenu />
+				<Flex flex={1}>
+					<Spacer />
+					<ThemeToggleButton />
+					{(sessionData && (
+						<Center ml={2} display={{ base: 'none', md: 'flex' }}>
+							<Link as={NextLink} href="/settings/profile">
+								<Avatar
+									height={'2.5rem'}
+									width={'2.5rem'}
+									name="Sasuke Uchiha"
+									src="https://bit.ly/broken-link"
+								/>
+							</Link>
+						</Center>
+					)) || (
+						<Link as={NextLink} href={'/auth/signin'}>
+							<Button ml={2} colorScheme="green">
+								Sign In
+							</Button>{' '}
+						</Link>
+					)}
+
+					<CollapsedMenu />
+				</Flex>
 			</Container>
 		</Box>
 	);
@@ -92,12 +119,16 @@ function FullMenu({ path }: { path: string }) {
 			width={{ base: 'full', md: 'auto' }}
 			spacing="12px"
 		>
-			<LinkItem href="/about" path={path}>
-				About
-			</LinkItem>
-			<LinkItem href="/features" path={path}>
-				Features
-			</LinkItem>
+			{!sessionData && (
+				<>
+					<LinkItem href="/about" path={path}>
+						About
+					</LinkItem>
+					<LinkItem href="/features" path={path}>
+						Features
+					</LinkItem>
+				</>
+			)}
 			<Link
 				target="_blank"
 				href="https://github.com/Andreasgdp/Wishing-Plan"
@@ -126,40 +157,42 @@ function CollapsedMenu() {
 	const { data: sessionData } = useSession();
 
 	return (
-		<Flex flex={1}>
-			<Spacer />
-			<ThemeToggleButton />
-			<Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
-				<Menu>
-					<MenuButton
-						as={IconButton}
-						icon={<HamburgerIcon />}
-						variant="outline"
-						aria-label="Options"
-					/>
-					<MenuList>
-						<MenuItem as={NextLink} href="/about">
-							About
+		<Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
+			<Menu>
+				<MenuButton
+					as={IconButton}
+					icon={<HamburgerIcon />}
+					variant="outline"
+					aria-label="Options"
+				/>
+				<MenuList>
+					{(sessionData && (
+						<MenuItem as={NextLink} href="/settings/profile">
+							Profile
 						</MenuItem>
-						<MenuItem as={NextLink} href="/features">
-							Features
-						</MenuItem>
-						{sessionData && (
-							<MenuItem>
-								<button onClick={() => signOut()}>
-									Sign Out
-								</button>
+					)) || (
+						<>
+							<MenuItem as={NextLink} href="/about">
+								About
 							</MenuItem>
-						)}
-						<MenuItem
-							as={Link}
-							href="https://github.com/Andreasgdp/Portfolio"
-						>
-							View Source
+							<MenuItem as={NextLink} href="/features">
+								Features
+							</MenuItem>
+						</>
+					)}
+					{sessionData && (
+						<MenuItem>
+							<button onClick={() => signOut()}>Sign Out</button>
 						</MenuItem>
-					</MenuList>
-				</Menu>
-			</Box>
-		</Flex>
+					)}
+					<MenuItem
+						as={Link}
+						href="https://github.com/Andreasgdp/Portfolio"
+					>
+						View Source
+					</MenuItem>
+				</MenuList>
+			</Menu>
+		</Box>
 	);
 }

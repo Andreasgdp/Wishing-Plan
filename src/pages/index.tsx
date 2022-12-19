@@ -1,8 +1,8 @@
+import type { GetServerSideProps } from 'next';
 import { type NextPage } from 'next';
-import { getSession } from 'next-auth/react';
 
 import { DashboardScreen } from '@components/screens/Dashboard/DashboardScreen';
-import type { CtxOrReq } from 'next-auth/client/_utils';
+import { requireAuthentication } from '@utils/requireAuthentication';
 
 const Home: NextPage = () => {
 	return (
@@ -14,19 +14,10 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export async function getServerSideProps(context: CtxOrReq | undefined) {
-	const session = await getSession(context);
-
-	if (!session) {
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+	async () => {
 		return {
-			redirect: {
-				destination: '/product',
-				permanent: false,
-			},
+			props: {},
 		};
 	}
-
-	return {
-		props: {},
-	};
-}
+);

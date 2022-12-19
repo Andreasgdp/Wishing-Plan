@@ -3,9 +3,6 @@ import styled from '@emotion/styled';
 import type { Wish } from '@prisma/client';
 import { WishCard } from './WishCard';
 
-const CircleImage = styled.img`
-	border-radius: 50%;
-`;
 
 export const WishesList = ({
 	wishes,
