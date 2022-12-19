@@ -89,8 +89,8 @@ const Navbar = (props: NavbarProps) => {
 								<Avatar
 									height={'2.5rem'}
 									width={'2.5rem'}
-									name="Sasuke Uchiha"
-									src="https://bit.ly/broken-link"
+									name={sessionData?.user?.name ?? 'User'}
+									src={sessionData?.user?.image ?? ''}
 								/>
 							</Link>
 						</Center>
