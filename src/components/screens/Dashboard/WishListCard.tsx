@@ -52,6 +52,7 @@ export const WishListCard = ({
 			description: data.description,
 		});
 		reset();
+		if (refreshListFunc) refreshListFunc();
 	});
 
 	const onOpenEdit = () => {
@@ -101,11 +102,7 @@ export const WishListCard = ({
 						onDelete={onDelete}
 					/>
 				</CardFooter>
-				<Modal
-					isOpen={isOpen}
-					onClose={onClose}
-					onCloseComplete={refreshListFunc}
-				>
+				<Modal isOpen={isOpen} onClose={onClose}>
 					<ModalOverlay />
 
 					<ModalContent>

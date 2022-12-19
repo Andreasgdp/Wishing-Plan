@@ -45,6 +45,7 @@ export const DashboardScreen = () => {
 			description: data.description,
 		});
 		reset();
+		refetchWishLists()
 	});
 
 	// modal
@@ -85,7 +86,6 @@ export const DashboardScreen = () => {
 					<Modal
 						isOpen={isOpen}
 						onClose={onClose}
-						onCloseComplete={refetchWishLists}
 					>
 						<ModalOverlay />
 

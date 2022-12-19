@@ -3,7 +3,6 @@ import {
 	Center,
 	Container,
 	FormControl,
-	FormErrorMessage,
 	FormLabel,
 	Input,
 	Modal,
@@ -39,16 +38,14 @@ type WishListScreenProps = {
 	wishListId: string;
 };
 
-export const formatPriceForInput = (val: string) => `$` + val;
-export const parsePrice = (val: string) => val.replace(/^\$/, '');
-export const priceToNumber = (val: string) => Number(val.replace(/^\$/, ''));
-
 export const WishListScreen = (props: WishListScreenProps) => {
 	const { register, handleSubmit, reset } = useForm<WishForm>();
 
+	const { isLoading: isLoadingSettings } = trpc.settings.get.useQuery();
+
 	const {
 		data: wishes,
-		isLoading,
+		isLoading: isLoadingWishes,
 		refetch: refetchWishLists,
 	} = trpc.wishList.getWishes.useQuery({
 		id: props.wishListId,
@@ -57,15 +54,16 @@ export const WishListScreen = (props: WishListScreenProps) => {
 	const createWish = trpc.wish.create.useMutation();
 
 	const onSubmit = handleSubmit(async (data) => {
-		onClose();
 		await createWish.mutateAsync({
 			title: data.title,
 			description: data.description,
-			price: priceToNumber(data.price),
+			price: Number(data.price),
 			url: data.url,
 			wishListId: props.wishListId,
 		});
 		reset();
+		await refetchWishLists();
+		onClose();
 	});
 
 	// modal
@@ -82,7 +80,7 @@ export const WishListScreen = (props: WishListScreenProps) => {
 					</Center>
 					{/* TODO: replace with skeleton setup in future */}
 					<EmptyStateWrapper
-						isLoading={isLoading}
+						isLoading={isLoadingWishes && isLoadingSettings}
 						data={wishes}
 						EmptyComponent={
 							<Center>
@@ -124,7 +122,7 @@ export const WishListScreen = (props: WishListScreenProps) => {
 											{...register('title')}
 										/>
 									</FormControl>
-									<FormControl isRequired>
+									<FormControl>
 										<FormLabel>
 											Describe your Wish
 										</FormLabel>
@@ -133,9 +131,6 @@ export const WishListScreen = (props: WishListScreenProps) => {
 											type="text"
 											{...register('description')}
 										/>
-										<FormErrorMessage>
-											Description is required.
-										</FormErrorMessage>
 									</FormControl>
 									<FormControl isRequired>
 										<FormLabel>
@@ -146,11 +141,9 @@ export const WishListScreen = (props: WishListScreenProps) => {
 											id="price"
 											{...register('price')}
 											onChange={(valueString) =>
-												setValue(
-													parsePrice(valueString)
-												)
+												setValue(valueString)
 											}
-											value={formatPriceForInput(value)}
+											value={value}
 											max={100000000}
 											min={0}
 										>
@@ -160,9 +153,6 @@ export const WishListScreen = (props: WishListScreenProps) => {
 												<NumberDecrementStepper />
 											</NumberInputStepper>
 										</NumberInput>
-										<FormErrorMessage>
-											Price is required.
-										</FormErrorMessage>
 									</FormControl>
 									<FormControl>
 										<FormLabel>URL for Wish</FormLabel>
