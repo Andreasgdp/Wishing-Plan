@@ -22,9 +22,10 @@ export const wishRouter = router({
 		.input(
 			z.object({
 				title: z.string(),
-				description: z.string(),
+				description: z.string().nullish(),
 				price: z.number(),
 				url: z.string(),
+				imageUrl: z.string().nullish(),
 				wishListId: z.string(),
 			})
 		)
@@ -40,6 +41,7 @@ export const wishRouter = router({
 					description: input.description,
 					price: input.price,
 					url: input.url,
+					imageUrl: input.imageUrl,
 					wishList: {
 						connect: { id: input.wishListId },
 					},
@@ -51,9 +53,10 @@ export const wishRouter = router({
 			z.object({
 				id: z.string(),
 				title: z.string(),
-				description: z.string(),
+				description: z.string().nullish(),
 				price: z.number(),
 				url: z.string(),
+				imageUrl: z.string().nullish(),
 				wishListId: z.string(),
 			})
 		)
