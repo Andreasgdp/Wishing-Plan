@@ -7,8 +7,6 @@ export const wishListRouter = router({
 	getAll: protectedProcedure.query(({ ctx }) => {
 		const userId = ctx.session?.user?.id;
 
-		console.log('userId', userId);
-
 		return ctx.prisma.wishList.findMany({
 			where: { creatorId: userId },
 		});

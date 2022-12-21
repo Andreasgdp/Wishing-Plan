@@ -1,8 +1,6 @@
 import { Container, SimpleGrid } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import type { Wish } from '@prisma/client';
 import { WishCard } from './WishCard';
-
 
 export const WishesList = ({
 	wishes,

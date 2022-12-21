@@ -5,26 +5,14 @@ import {
 	CardFooter,
 	CardHeader,
 	Center,
-	FormControl,
-	FormLabel,
 	Heading,
-	Input,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	Text,
-	useDisclosure,
 } from '@chakra-ui/react';
 import { DeleteAlert } from '@components/common/Alert/DeleteAlert';
 import type { WishList } from '@prisma/client';
 import { trpc } from '@utils/trpc';
 import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import type { WishListForm } from './DashboardScreen';
+import { WishListModal } from './WishListModal';
 
 export const WishListCard = ({
 	wishList,
@@ -33,8 +21,6 @@ export const WishListCard = ({
 	wishList: WishList;
 	refreshListFunc?: () => void;
 }) => {
-	const { register, handleSubmit, reset, setValue } = useForm<WishListForm>();
-
 	const deleteWishList = trpc.wishList.delete.useMutation();
 
 	const onDelete = async () => {
@@ -44,25 +30,14 @@ export const WishListCard = ({
 
 	const editWishList = trpc.wishList.update.useMutation();
 
-	const onSubmit = handleSubmit(async (data) => {
-		onClose();
+	const onSubmit = async (name: string, description: string) => {
 		await editWishList.mutateAsync({
 			id: wishList.id,
-			name: data.name,
-			description: data.description,
+			name: name,
+			description: description,
 		});
-		reset();
-		if (refreshListFunc) refreshListFunc();
-	});
-
-	const onOpenEdit = () => {
-		setValue('name', wishList.name);
-		setValue('description', wishList.description);
-		onOpen();
+		if (refreshListFunc) await refreshListFunc();
 	};
-
-	// modal
-	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	return (
 		<Center>
@@ -92,9 +67,18 @@ export const WishListCard = ({
 							View here
 						</Button>
 					</Link>
-					<Button mr={2} mb={2} variant="ghost" onClick={onOpenEdit}>
-						Edit
-					</Button>
+
+					<WishListModal
+						buttonProps={{
+							mr: 2,
+							mb: 2,
+							variant: 'ghost',
+							colorScheme: 'purple',
+						}}
+						buttonName="Edit"
+						onSubmit={onSubmit}
+						existingWishList={wishList}
+					/>
 
 					<DeleteAlert
 						typeToDelete="WishList"
@@ -102,48 +86,6 @@ export const WishListCard = ({
 						onDelete={onDelete}
 					/>
 				</CardFooter>
-				<Modal isOpen={isOpen} onClose={onClose}>
-					<ModalOverlay />
-
-					<ModalContent>
-						<ModalHeader>
-							<ModalCloseButton />
-						</ModalHeader>
-
-						<ModalBody>
-							<form id="new-note" onSubmit={onSubmit}>
-								<FormControl isRequired>
-									<FormLabel>Name of WishList</FormLabel>
-									<Input
-										id="name"
-										type="text"
-										{...register('name', {
-											required: true,
-										})}
-									/>
-								</FormControl>
-								<FormControl isRequired>
-									<FormLabel>
-										Describe your WishList
-									</FormLabel>
-									<Input
-										id="description"
-										type="text"
-										{...register('description', {
-											required: true,
-										})}
-									/>
-								</FormControl>
-							</form>
-						</ModalBody>
-
-						<ModalFooter>
-							<Button type="submit" form="new-note">
-								Submit
-							</Button>
-						</ModalFooter>
-					</ModalContent>
-				</Modal>
 			</Card>
 		</Center>
 	);

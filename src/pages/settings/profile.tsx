@@ -1,6 +1,6 @@
 import { requireAuthentication } from '@utils/requireAuthentication';
 import type { GetServerSideProps } from 'next';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 
 import { Button, Container, Stack } from '@chakra-ui/react';
@@ -9,6 +9,7 @@ import { Content } from '@components/layouts/Content';
 import { settingsNavigationData } from '@lib/constants';
 
 // TODO: implement something like this to get rid of duplicate code when creating new pages in the settings section
+// https://github.com/hauptrolle/chakra-templates/blob/main/src/pages/%5B...slug%5D.tsx
 
 // Create about page component
 const Profile = () => {
@@ -29,7 +30,7 @@ const Profile = () => {
 						baseURL="/settings"
 					/>
 					<Content>
-						<Button>I am a button</Button>
+						<Button onClick={() => signOut()} variant='solid' colorScheme='red'>Sign Out</Button>
 					</Content>
 				</Stack>
 			</Container>

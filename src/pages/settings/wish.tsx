@@ -18,6 +18,7 @@ import { settingsNavigationData } from '@lib/constants';
 import { trpc } from '@utils/trpc';
 
 // TODO: implement something like this to get rid of duplicate code when creating new pages in the settings section
+// https://github.com/hauptrolle/chakra-templates/blob/main/src/pages/%5B...slug%5D.tsx
 
 // Create about page component
 const Wish = () => {

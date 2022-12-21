@@ -1,6 +1,7 @@
 import { router } from '../trpc';
 import { authRouter } from './auth';
 import { exampleRouter } from './example';
+import { scrapingRouter } from './scraping';
 import { settingsRouter } from './settings';
 import { shortLinkRouter } from './short-link';
 import { wishRouter } from './Wish/wish';
@@ -13,6 +14,7 @@ export const appRouter = router({
 	wish: wishRouter,
 	wishList: wishListRouter,
 	settings: settingsRouter,
+	scraping: scrapingRouter,
 });
 
 // export type definition of API

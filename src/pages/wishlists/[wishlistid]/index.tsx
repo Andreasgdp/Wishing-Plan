@@ -18,7 +18,7 @@ const ClassroomPage: NextPage = () => {
 				/>
 			</Head>
 
-			<WishListScreen wishListId={wishListId} />
+			{wishListId && <WishListScreen wishListId={wishListId} />}
 		</>
 	);
 };
