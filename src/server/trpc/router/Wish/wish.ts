@@ -70,6 +70,7 @@ export const wishRouter = router({
 					description: input.description,
 					price: input.price,
 					url: input.url,
+					imageUrl: input.imageUrl,
 					wishList: {
 						connect: { id: input.wishListId },
 					},
