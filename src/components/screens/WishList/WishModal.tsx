@@ -49,7 +49,7 @@ type WishModalProps = {
 export const WishModal = (props: WishModalProps) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	const { register, handleSubmit, reset, getValues, setValue, setFocus } =
+	const { register, handleSubmit, reset, getValues, setValue } =
 		useForm<WishForm>();
 
 	const [priceValue, setPriceValue] = useState('0');
@@ -82,6 +82,7 @@ export const WishModal = (props: WishModalProps) => {
 			Number(priceValue)
 		);
 		reset();
+		setDescriptionValue('');
 		setPriceValue('0');
 		onClose();
 	});
@@ -94,7 +95,6 @@ export const WishModal = (props: WishModalProps) => {
 			setValue('imageUrl', props.existingWish.imageUrl ?? '');
 			setPriceValue(props.existingWish.price.toString());
 		}
-		setFocus('url');
 		onOpen();
 	};
 

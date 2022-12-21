@@ -1,7 +1,7 @@
 import { Link, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import type { ReactNode } from 'react';
-import NextLink from 'next/link';
 
 const NavigationLink = ({
 	href,
@@ -13,12 +13,6 @@ const NavigationLink = ({
 	asPath: string;
 }) => {
 	const isActive = asPath === href;
-
-	console.log('isActive', isActive);
-	console.log('asPath', asPath);
-	console.log('href', href);
-	
-	
 
 	const activeBg = useColorModeValue('green.50', 'green.900');
 	const inactiveBg = useColorModeValue('gray.100', 'gray.900');
@@ -76,7 +70,7 @@ export const Navigation = (props: NavigationProps) => {
 			display={{ base: 'none', lg: 'block' }}
 		>
 			{props.data &&
-				props.data.map(((category, index) => (
+				props.data.map((category, index) => (
 					<Stack key={index}>
 						<Text
 							textTransform={'uppercase'}
@@ -99,7 +93,7 @@ export const Navigation = (props: NavigationProps) => {
 							))}
 						</Stack>
 					</Stack>
-				)))}
+				))}
 		</Stack>
 	);
 };

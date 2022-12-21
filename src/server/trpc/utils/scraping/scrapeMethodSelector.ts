@@ -3,8 +3,6 @@ import { pricerunner } from './sites/pricerunner';
 export const getProductInfo = async (url: string) => {
 	const { hostname } = new URL(url);
 
-	console.log('hostname', hostname);
-
 	switch (hostname) {
 		case 'www.pricerunner.com':
 			return pricerunner(url);

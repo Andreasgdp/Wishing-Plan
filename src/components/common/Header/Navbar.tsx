@@ -20,7 +20,7 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import { IoLogoGithub } from 'react-icons/io5';
 import ThemeToggleButton from '../Theme/ThemeToggleButton';
@@ -141,14 +141,6 @@ function FullMenu({ path }: { path: string }) {
 				<IoLogoGithub />
 				<Text style={{ marginTop: '-2px' }}>Source</Text>
 			</Link>
-			{sessionData && (
-				<button
-					style={{ marginTop: '-3px', marginLeft: '1.5rem' }}
-					onClick={() => signOut()}
-				>
-					Sign Out
-				</button>
-			)}
 		</Stack>
 	);
 }
@@ -179,11 +171,6 @@ function CollapsedMenu() {
 								Features
 							</MenuItem>
 						</>
-					)}
-					{sessionData && (
-						<MenuItem>
-							<button onClick={() => signOut()}>Sign Out</button>
-						</MenuItem>
 					)}
 					<MenuItem
 						as={Link}
