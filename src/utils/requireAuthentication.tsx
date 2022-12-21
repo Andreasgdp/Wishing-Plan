@@ -23,9 +23,6 @@ export function requireAuthentication(gssp: GetServerSideProps) {
 							permanent: false,
 						},
 					};
-				} else {
-					// If the user exists, return the props
-					return await gssp(ctx);
 				}
 			} catch (error) {
 				// Failure in the query or any error should fallback here
@@ -40,11 +37,6 @@ export function requireAuthentication(gssp: GetServerSideProps) {
 			}
 		}
 
-		return {
-			redirect: {
-				permanent: false,
-				destination: '/auth/signin',
-			},
-		};
+		return await gssp(ctx);
 	};
 }
