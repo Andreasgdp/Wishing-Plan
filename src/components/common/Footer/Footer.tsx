@@ -11,7 +11,6 @@ import {
 	useColorModeValue,
 	VisuallyHidden,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
 import NextLink from 'next/link';
 import type { ReactNode } from 'react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
@@ -50,9 +49,6 @@ const SocialButton = ({
 };
 
 export default function SmallCentered() {
-	const { data: sessionData } = useSession();
-
-	const url = sessionData ? '/' : '/product';
 	return (
 		<Box
 			bg={useColorModeValue('gray.50', 'gray.800')}
@@ -78,8 +74,8 @@ export default function SmallCentered() {
 			>
 				<Logo />
 				<Stack direction={['column', 'row']} spacing={6}>
-					<Link as={NextLink} href={url}>
-						<Center>Home</Center>
+					<Link as={NextLink} href="/product">
+						<Center>Product</Center>
 					</Link>
 					<Link as={NextLink} href={'/about'}>
 						<Center>About</Center>
