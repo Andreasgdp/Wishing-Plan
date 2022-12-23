@@ -14,6 +14,7 @@ import {
 import NextLink from 'next/link';
 import type { ReactNode } from 'react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { IoLogoGithub } from 'react-icons/io5';
 import Logo from '../Header/Logo';
 
 const SocialButton = ({
@@ -85,6 +86,19 @@ export default function SmallCentered() {
 					</Link>
 					<Link as={NextLink} href={'contact'}>
 						<Center>Contact</Center>
+					</Link>
+					<Link
+						as={NextLink}
+						target="_blank"
+						href="https://github.com/Andreasgdp/Wishing-Plan"
+						display="inline-flex"
+						alignItems="center"
+						style={{ gap: 4 }}
+					>
+						<IoLogoGithub
+							color={useColorModeValue('black', 'white')}
+						/>
+						<Center>Source</Center>
 					</Link>
 				</Stack>
 			</Container>

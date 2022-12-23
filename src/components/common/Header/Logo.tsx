@@ -15,10 +15,8 @@ const LogoBox = styled.span`
 	img {
 		transition-duration: 250ms;
 	}
-	@media (hover: hover) {
-		&:hover img {
-			transform: rotate(15deg);
-		}
+	&:hover img {
+		transform: rotate(15deg);
 	}
 `;
 

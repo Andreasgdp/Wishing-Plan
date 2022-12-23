@@ -112,6 +112,9 @@ const Navbar = (props: NavbarProps) => {
 export default Navbar;
 function FullMenu({ path }: { path: string }) {
 	const { data: sessionData } = useSession();
+
+	const sourceColor = useColorModeValue('gray200', 'white.900');
+
 	return (
 		<Stack
 			direction={{ base: 'column', md: 'row' }}
@@ -119,7 +122,7 @@ function FullMenu({ path }: { path: string }) {
 			width={{ base: 'full', md: 'auto' }}
 			spacing="12px"
 		>
-			{!sessionData && (
+			{(!sessionData && (
 				<>
 					<LinkItem href="/about" path={path}>
 						About
@@ -127,20 +130,26 @@ function FullMenu({ path }: { path: string }) {
 					<LinkItem href="/features" path={path}>
 						Features
 					</LinkItem>
+					<Link
+						target="_blank"
+						href="https://github.com/Andreasgdp/Wishing-Plan"
+						color={sourceColor}
+						display="inline-flex"
+						alignItems="center"
+						style={{ gap: 4, marginTop: '-2px' }}
+						pl={2}
+					>
+						<IoLogoGithub />
+						<Text style={{ marginTop: '-2px' }}>Source</Text>
+					</Link>
+				</>
+			)) || (
+				<>
+					<LinkItem href="/main-list" path={path}>
+						Main List (Not implemented)
+					</LinkItem>
 				</>
 			)}
-			<Link
-				target="_blank"
-				href="https://github.com/Andreasgdp/Wishing-Plan"
-				color={useColorModeValue('gray200', 'white.900')}
-				display="inline-flex"
-				alignItems="center"
-				style={{ gap: 4, marginTop: '-2px' }}
-				pl={2}
-			>
-				<IoLogoGithub />
-				<Text style={{ marginTop: '-2px' }}>Source</Text>
-			</Link>
 		</Stack>
 	);
 }
