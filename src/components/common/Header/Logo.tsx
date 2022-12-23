@@ -1,5 +1,6 @@
 import { Text, useColorModeValue } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -20,9 +21,13 @@ const LogoBox = styled.span`
 `;
 
 const Logo = () => {
+	const { data: sessionData } = useSession();
+
+	const url = sessionData ? '/' : '/product';
+
 	const logoImg = `/logo${useColorModeValue('-light', '-dark')}.svg`;
 	return (
-		<Link href="/" style={{ display: 'flex' }}>
+		<Link href={url} style={{ display: 'flex' }}>
 			<LogoBox>
 				{/* The with is set to 25.68 to medigate warning of inproper scaling based on the ratio of the svg file. */}
 				<Image src={logoImg} width={25.68} height={25} alt="logo" />

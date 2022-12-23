@@ -70,15 +70,14 @@ const Wish = () => {
 										<Select
 											placeholder={settings?.currency}
 											onChange={(e) => {
-												
-													updateCurrency
-														.mutateAsync({
-															currency:
-																e.target.value,
-														})
-														.then(() => {
-															refetchWishLists();
-														});
+												updateCurrency
+													.mutateAsync({
+														currency:
+															e.target.value,
+													})
+													.then(() => {
+														refetchWishLists();
+													});
 											}}
 										>
 											<option value="EUR">Euro</option>

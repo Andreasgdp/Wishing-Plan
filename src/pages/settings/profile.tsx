@@ -30,7 +30,13 @@ const Profile = () => {
 						baseURL="/settings"
 					/>
 					<Content>
-						<Button onClick={() => signOut()} variant='solid' colorScheme='red'>Sign Out</Button>
+						<Button
+							onClick={() => signOut()}
+							variant="solid"
+							colorScheme="red"
+						>
+							Sign Out
+						</Button>
 					</Content>
 				</Stack>
 			</Container>
