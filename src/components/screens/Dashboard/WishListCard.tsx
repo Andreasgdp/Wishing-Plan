@@ -11,7 +11,7 @@ import {
 import { DeleteAlert } from '@components/common/Alert/DeleteAlert';
 import type { WishList } from '@prisma/client';
 import { trpc } from '@utils/trpc';
-import Link from 'next/link';
+import router from 'next/router';
 import { WishListModal } from './WishListModal';
 
 export const WishListCard = ({
@@ -57,16 +57,17 @@ export const WishListCard = ({
 						},
 					}}
 				>
-					<Link href={`/wishlists/${wishList.id}`}>
-						<Button
-							mr={4}
-							mb={4}
-							colorScheme="purple"
-							variant="solid"
-						>
-							View here
-						</Button>
-					</Link>
+					<Button
+						mr={4}
+						mb={4}
+						colorScheme="purple"
+						variant="solid"
+						onClick={() => {
+							router.push(`/wishlists/${wishList.id}`);
+						}}
+					>
+						View here
+					</Button>
 
 					<WishListModal
 						buttonProps={{
