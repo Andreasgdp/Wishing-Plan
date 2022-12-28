@@ -35,7 +35,7 @@ const Wish = () => {
 			<Head>
 				<title>Settings - Wish</title>
 			</Head>
-			<Container maxW={'7xl'} flex={'1 0 auto'} py={8} mt={20}>
+			<Container maxW={'7xl'} flex={'1 0 auto'} py={8}>
 				<Stack
 					direction={{ base: 'column', lg: 'row' }}
 					spacing={{ base: 0, lg: 8 }}

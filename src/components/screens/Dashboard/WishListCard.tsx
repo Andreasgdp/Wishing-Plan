@@ -7,6 +7,7 @@ import {
 	Center,
 	Heading,
 	Text,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import { DeleteAlert } from '@components/common/Alert/DeleteAlert';
 import type { WishList } from '@prisma/client';
@@ -41,7 +42,10 @@ export const WishListCard = ({
 
 	return (
 		<Center>
-			<Card maxW={'30rem'}>
+			<Card
+				maxW={'30rem'}
+				background={useColorModeValue('gray.100', 'gray.700')}
+			>
 				<CardHeader>
 					<Heading size="md"> {wishList.name}</Heading>
 				</CardHeader>

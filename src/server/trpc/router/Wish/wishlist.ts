@@ -26,6 +26,27 @@ export const wishListRouter = router({
 				where: { wishListId: input.id },
 			});
 		}),
+	moveWishToWishList: protectedProcedure
+		.input(
+			z.object({
+				wishId: z.string(),
+				fromWishListId: z.string(),
+				toWishListId: z.string(),
+			})
+		)
+		.mutation(({ input, ctx }) => {
+			assertIsWishListCreator(ctx, input.fromWishListId);
+			assertIsWishListCreator(ctx, input.toWishListId);
+
+			return ctx.prisma.wish.update({
+				where: { id: input.wishId },
+				data: {
+					wishList: {
+						connect: { id: input.toWishListId },
+					},
+				},
+			});
+		}),
 	create: protectedProcedure
 		.input(
 			z.object({
