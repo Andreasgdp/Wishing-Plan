@@ -57,10 +57,14 @@ export const wishRouter = router({
 				price: z.number(),
 				url: z.string(),
 				imageUrl: z.string().nullish(),
-				wishListId: z.string(),
+				wishListId: z.string().nullish(),
 			})
 		)
 		.mutation(({ input, ctx }) => {
+			if (!input.wishListId) {
+				throw new Error('wishListId is required');
+			}
+
 			assertIsWishCreator(ctx, input.id);
 
 			return ctx.prisma.wish.update({

@@ -1,4 +1,5 @@
 import {
+	Button,
 	Center,
 	Checkbox,
 	Divider,
@@ -15,13 +16,41 @@ import {
 	Text,
 	Tooltip,
 	useColorModeValue,
+	useToast,
 } from '@chakra-ui/react';
+import type { Plan } from '@prisma/client';
+import { useEffect, useState } from 'react';
 
-export const PlanSidebar = () => {
+type PlanSidebarProps = {
+	plan?: Plan;
+};
+
+export const PlanSidebar = (props: PlanSidebarProps) => {
+	const toast = useToast();
+
 	const categoryColor = useColorModeValue('gray.800', 'gray.200');
 
-	const defaultSaving = 1600;
-	const defaultMonthlySaving = 1000;
+	function formatToDateString(date?: Date) {
+		if (!date) return '';
+		// format to yyyy-mm-dd
+		return date.toISOString().split('T')[0];
+	}
+
+	const [savedAmount, setSavedAmount] = useState(0);
+	const handleSavedAmountChange = (value: string) =>
+		setSavedAmount(Number(value));
+
+	const [amountToSave, setAmountToSave] = useState(0);
+	const handleAmountToSaveChange = (value: string) =>
+		setAmountToSave(Number(value));
+
+	useEffect(() => {
+		setSavedAmount(props.plan?.currentAmountSaved ?? 0);
+	}, [props.plan?.currentAmountSaved]);
+
+	useEffect(() => {
+		setAmountToSave(props.plan?.amountToSave ?? 0);
+	}, [props.plan?.amountToSave]);
 
 	return (
 		<Stack
@@ -33,6 +62,21 @@ export const PlanSidebar = () => {
 			display={{ base: 'none', lg: 'block' }}
 		>
 			<Stack>
+				<Button
+					colorScheme={'purple'}
+					onClick={() =>
+						toast({
+							title: 'Plan settings updated successfully',
+							description: "Plan's settings have been updated",
+							status: 'success',
+							duration: 2000,
+							isClosable: true,
+							position: 'top',
+						})
+					}
+				>
+					Update
+				</Button>
 				<Text
 					align={'center'}
 					textTransform={'uppercase'}
@@ -51,7 +95,9 @@ export const PlanSidebar = () => {
 					<InputGroup>
 						<NumberInput
 							allowMouseWheel
-							defaultValue={defaultSaving}
+							defaultValue={props.plan?.currentAmountSaved}
+							value={savedAmount}
+							onChange={handleSavedAmountChange}
 						>
 							<NumberInputField />
 							<NumberInputStepper>
@@ -64,7 +110,7 @@ export const PlanSidebar = () => {
 				</Tooltip>
 				<Tooltip
 					hasArrow
-					label="Auto-update savings based on amount and interval"
+					label="Auto-update savings based on amount to save and interval"
 					placement="auto"
 				>
 					<Center>
@@ -91,8 +137,19 @@ export const PlanSidebar = () => {
 					<InputGroup>
 						<NumberInput
 							allowMouseWheel
-							defaultValue={defaultMonthlySaving}
+							defaultValue={props.plan?.amountToSave}
 							min={0}
+							value={amountToSave}
+							onChange={handleAmountToSaveChange}
+							onBlur={() => {
+								// TODO: how do we update the plan?
+								if (props.plan?.amountToSave) {
+									props.plan.amountToSave = amountToSave;
+								}
+								console.log(amountToSave);
+
+								console.log(props.plan);
+							}}
 						>
 							<NumberInputField />
 							<NumberInputStepper>
@@ -118,6 +175,9 @@ export const PlanSidebar = () => {
 						placeholder="Select Date and Time"
 						size="md"
 						type="date"
+						defaultValue={formatToDateString(
+							props.plan?.firstSaving
+						)}
 					/>
 				</Tooltip>
 				<Text
@@ -135,7 +195,10 @@ export const PlanSidebar = () => {
 					label="Frequency of current amount saved updated based on Savings Amount"
 					placement="auto"
 				>
-					<Select placeholder="Select option">
+					<Select
+						placeholder={props.plan?.frequency ?? 'Select option'}
+						defaultValue={props.plan?.frequency}
+					>
 						<option value="som">Start of month</option>
 						<option value="eom">End of month</option>
 						<option value="ed">Every day</option>

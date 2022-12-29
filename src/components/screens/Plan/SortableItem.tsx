@@ -1,6 +1,6 @@
 import { DragHandleIcon } from '@chakra-ui/icons';
 import {
-	Badge,
+	Box,
 	Card,
 	CardBody,
 	Center,
@@ -14,22 +14,22 @@ import {
 	NumberInputField,
 	NumberInputStepper,
 	Progress,
+	Tag,
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { PlanWishType } from '@server/trpc/router/Plan/plan';
 
 type SortableItemProps = {
-	id: string;
+	wish: PlanWishType;
+	currency: string;
 };
 
 export function SortableItem(props: SortableItemProps) {
-	// props.id
-	// JavaScript
-
 	const { attributes, listeners, setNodeRef, transform, transition } =
-		useSortable({ id: props.id });
+		useSortable({ id: props.wish.id });
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -43,7 +43,7 @@ export function SortableItem(props: SortableItemProps) {
 				background={useColorModeValue('gray.100', 'gray.700')}
 			>
 				<Center ml={2}>
-					<NumberInput defaultValue={1} w={85} p={0} m={0}>
+					<NumberInput defaultValue={props.wish.placement} w={85} p={0} m={0}>
 						<NumberInputField />
 						<NumberInputStepper>
 							<NumberIncrementStepper />
@@ -51,26 +51,32 @@ export function SortableItem(props: SortableItemProps) {
 						</NumberInputStepper>
 					</NumberInput>
 				</Center>
-				<Center ml={2}>
-					<Image
-						boxSize="100px"
-						borderRadius={'lg'}
-						objectFit="cover"
-						src="https://bit.ly/dan-abramov"
-						alt="Dan Abramov"
-					/>
-				</Center>
-				<CardBody>
-					<Flex>
-						<Flex
-							flex="1"
-							gap="2"
-							alignItems="center"
-							flexWrap="wrap"
-						>
-							<Heading>
-								{props.id}{' '}
-								<Badge colorScheme="purple">3 days left</Badge>
+
+				<CardBody pr={2} maxW={'85%'}>
+					<Flex maxW={'85%'}>
+						<Image
+							boxSize="100px"
+							borderRadius={'lg'}
+							objectFit="cover"
+							src={
+								props.wish.imageUrl ??
+								'/images/placeholderWish.png'
+							}
+							alt="Wish image"
+							mr={2}
+							mt={-0.1}
+						/>
+						<Box flex="1" gap="2" alignItems="center" maxW={'85%'}>
+							<Tag colorScheme="purple" size={'lg'}>
+								3 days left
+							</Tag>
+							<Heading
+								maxW={'70%'}
+								overflowX={'hidden'}
+								textOverflow={'ellipsis'}
+								whiteSpace={'nowrap'}
+							>
+								{props.wish.title}{' '}
 							</Heading>
 							<Text
 								align={'left'}
@@ -81,13 +87,15 @@ export function SortableItem(props: SortableItemProps) {
 								fontWeight={500}
 								fontSize={'lg'}
 								letterSpacing={1}
-								width={'80%'}
+								maxW={'70%'}
 								overflowX={'hidden'}
 								textOverflow={'ellipsis'}
 								whiteSpace={'nowrap'}
-								mb={-10}
+								mb={-7}
 							>
-								Some wish description that is very long andfghhjsdgfjhasgdfgadsfghhajfgjagf
+								{props.wish.description !== ''
+									? props.wish.description
+									: 'Empty Description'}
 							</Text>
 							<Text
 								align={'right'}
@@ -99,11 +107,11 @@ export function SortableItem(props: SortableItemProps) {
 								fontWeight={700}
 								fontSize={'lg'}
 								letterSpacing={1}
-								width={'100%'}
+								width={'120%'}
 							>
-								2400 DKK
+								{props.wish.price} {props.currency}
 							</Text>
-						</Flex>
+						</Box>
 					</Flex>
 					<Progress mt={2} colorScheme={'purple'} value={80} />
 				</CardBody>
