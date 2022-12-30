@@ -146,9 +146,6 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 								if (props.plan?.amountToSave) {
 									props.plan.amountToSave = amountToSave;
 								}
-								console.log(amountToSave);
-
-								console.log(props.plan);
 							}}
 						>
 							<NumberInputField />

@@ -1,5 +1,5 @@
-import { PlanWish } from "@prisma/client";
-import { PlanWishType } from "@server/trpc/router/Plan/plan";
+import type { PlanWish } from '@prisma/client';
+import type { PlanWishType } from '@server/trpc/router/Plan/plan';
 
 export const SavingsFrequency = {
 	SOM: 'SOM',
@@ -14,9 +14,6 @@ export function updatePlacement(
 	oldIndex: number,
 	newIndex: number
 ) {
-	console.log('updatePlacement', oldIndex, newIndex);
-	console.log('planWishes', planWishes);
-	
 	for (const planWish of planWishes) {
 		if (planWish.placement === oldIndex) {
 			planWish.placement = newIndex;
@@ -32,9 +29,6 @@ export function updatePlacement(
 			planWish.placement++;
 		}
 	}
-
-	console.log('planWishes', planWishes);
-	
 
 	return planWishes;
 }

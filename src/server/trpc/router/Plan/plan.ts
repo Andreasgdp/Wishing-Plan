@@ -1,5 +1,5 @@
 import { updatePlacement } from '@components/screens/Plan/planUtils';
-import type { PlanWish, Wish } from '@prisma/client';
+import type { Wish } from '@prisma/client';
 import { assertHasAccessToPlan } from '@server/trpc/utils/assertHasAccessToPlan';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
@@ -20,8 +20,6 @@ export const planRouter = router({
 	getWishes: protectedProcedure
 		.input(z.object({ planId: z.string().nullish() }))
 		.query(({ input, ctx }) => {
-			console.log('input.planId', input.planId);
-
 			if (!input.planId) {
 				throw new TRPCError({ code: 'NOT_FOUND' });
 			}
@@ -61,6 +59,25 @@ export const planRouter = router({
 			assertHasAccessToPlan(ctx, input.planId);
 
 			const userId = ctx.session?.user?.id;
+
+			// check if wish already exists based on url
+			const existingWish = await ctx.prisma.wish.findFirst({
+				where: { url: input.wishUrl },
+			});
+
+			if (existingWish) {
+				// check if wish is already in plan
+				const existingPlanWish = await ctx.prisma.planWish.findFirst({
+					where: { planId: input.planId, wishId: existingWish.id },
+				});
+
+				if (existingPlanWish) {
+					throw new TRPCError({
+						code: 'CONFLICT',
+						message: 'Wish already exists in plan',
+					});
+				}
+			}
 
 			const wish = await ctx.prisma.wish.create({
 				data: {
@@ -163,4 +180,3 @@ export const planRouter = router({
 			});
 		}),
 });
-

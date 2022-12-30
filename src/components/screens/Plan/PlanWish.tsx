@@ -113,7 +113,7 @@ export function PlanWishComponent(props: SortableItemProps) {
 								{props.wish.timeLeft.text}
 							</Tag>
 							<Heading
-								maxW={'70%'}
+								maxW={'90%'}
 								overflowX={'hidden'}
 								textOverflow={'ellipsis'}
 								whiteSpace={'nowrap'}
@@ -129,7 +129,7 @@ export function PlanWishComponent(props: SortableItemProps) {
 								fontWeight={500}
 								fontSize={'lg'}
 								letterSpacing={1}
-								maxW={'70%'}
+								maxW={'90%'}
 								overflowX={'hidden'}
 								textOverflow={'ellipsis'}
 								whiteSpace={'nowrap'}

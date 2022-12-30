@@ -64,15 +64,34 @@ export const PlanScreen = () => {
 		imageUrl: string,
 		price: number
 	) => {
-		await createAndAddWish.mutateAsync({
-			planId: 'clc87ke8v00009muo690pm3fn',
-			wishTitle: title,
-			wishDescription: description ?? '',
-			wishPrice: price,
-			wishUrl: url,
-			wishImageUrl: imageUrl,
-		});
-		await refetchWishLists();
+		await createAndAddWish
+			.mutateAsync({
+				planId: 'clc87ke8v00009muo690pm3fn',
+				wishTitle: title,
+				wishDescription: description ?? '',
+				wishPrice: price,
+				wishUrl: url,
+				wishImageUrl: imageUrl,
+			})
+			.then(async () => {
+				await refetchWishLists();
+				toast({
+					title: 'Wish created',
+					description: `${title} been added to your plan`,
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+			})
+			.catch((err) => {
+				toast({
+					title: 'Error',
+					description: err.message,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+				});
+			});
 	};
 
 	return (
@@ -303,8 +322,6 @@ export const PlanScreen = () => {
 			firstSavingDate
 		);
 
-		console.log('nextSavingDate', nextSavingDate);
-
 		const today = new Date();
 		const m1 = moment(today);
 		const m2 = moment(nextSavingDate);
@@ -323,7 +340,6 @@ export const PlanScreen = () => {
 		const daysSinceFirstSaving = Math.floor(
 			(today.getTime() - firstSaving.getTime()) / (1000 * 60 * 60 * 24)
 		);
-		console.log('intervalsLeft', intervalsLeft);
 
 		switch (frequency) {
 			case 'som':
