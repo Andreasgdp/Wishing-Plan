@@ -44,7 +44,6 @@ async function hasPlanCheck(user: User | AdapterUser) {
 			data: {
 				userId: user.id,
 				amountToSave: 0,
-				autoUpdateSavedAmount: false,
 				currentAmountSaved: 0,
 				firstSaving: new Date(),
 				frequency: SavingsFrequency.SOM,
