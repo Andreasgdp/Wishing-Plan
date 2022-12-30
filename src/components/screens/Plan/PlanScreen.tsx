@@ -53,6 +53,44 @@ export const PlanScreen = () => {
 
 	const relocateWish = trpc.plan.relocateWish.useMutation();
 
+	const updatePlanSettings = trpc.plan.updatePlan.useMutation();
+
+	const onPlanSettingsChange = async (
+		amountToSave: number,
+		currentAmountSaved: number,
+		firstSaving: Date,
+		frequency: string
+	) => {
+		await updatePlanSettings
+			.mutateAsync({
+				planId: 'clc87ke8v00009muo690pm3fn',
+				amountToSave,
+				currentAmountSaved,
+				firstSaving,
+				frequency,
+			})
+			.then(async () => {
+				await refetchPlan();
+				await refetchWishLists();
+				toast({
+					title: 'Plan updated',
+					description: `Your plan has been updated`,
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+			})
+			.catch((err) => {
+				toast({
+					title: 'Error',
+					description: err.message,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+				});
+			});
+	};
+
 	useEffect(() => {
 		setWishes(wishes ?? []);
 	}, [wishes]);
@@ -116,7 +154,10 @@ export const PlanScreen = () => {
 							</Center>
 						}
 						NonEmptyComponent={
-							<PlanSidebar plan={plan ?? undefined} />
+							<PlanSidebar
+								plan={plan ?? undefined}
+								onPlanSettingsChange={onPlanSettingsChange}
+							/>
 						}
 					/>
 
@@ -349,11 +390,13 @@ export const PlanScreen = () => {
 					1
 				);
 			case 'eom':
+				const correctMultiplyer = intervalsLeft === 1 ? 0 : 1;
 				return new Date(
 					today.getFullYear(),
-					today.getMonth() + 1 * intervalsLeft,
+					today.getMonth() + correctMultiplyer * intervalsLeft,
 					0
 				);
+
 			case 'ed':
 				return new Date(
 					today.getFullYear(),

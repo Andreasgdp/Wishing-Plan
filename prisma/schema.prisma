@@ -100,7 +100,6 @@ model Plan {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
   currentAmountSaved    Int
-  autoUpdateSavedAmount Boolean
   amountToSave          Int
   firstSaving           DateTime
   frequency             String

@@ -156,23 +156,21 @@ export const planRouter = router({
 	updatePlan: protectedProcedure
 		.input(
 			z.object({
-				id: z.string(),
+				planId: z.string(),
 				amountToSave: z.number(),
-				autoUpdateSavedAmount: z.boolean(),
 				currentAmountSaved: z.number(),
 				firstSaving: z.date(),
 				frequency: z.string(),
 			})
 		)
 		.mutation(({ input, ctx }) => {
-			assertHasAccessToPlan(ctx, input.id);
+			assertHasAccessToPlan(ctx, input.planId);
 			const userId = ctx.session?.user?.id;
 
 			return ctx.prisma.plan.update({
 				where: { userId: userId },
 				data: {
 					amountToSave: input.amountToSave,
-					autoUpdateSavedAmount: input.autoUpdateSavedAmount,
 					currentAmountSaved: input.currentAmountSaved,
 					firstSaving: input.firstSaving,
 					frequency: input.frequency,

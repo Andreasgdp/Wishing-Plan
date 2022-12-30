@@ -1,8 +1,5 @@
 import {
 	Button,
-	Center,
-	Checkbox,
-	Divider,
 	Input,
 	InputGroup,
 	InputRightAddon,
@@ -16,25 +13,22 @@ import {
 	Text,
 	Tooltip,
 	useColorModeValue,
-	useToast,
 } from '@chakra-ui/react';
 import type { Plan } from '@prisma/client';
 import { useEffect, useState } from 'react';
 
 type PlanSidebarProps = {
 	plan?: Plan;
+	onPlanSettingsChange: (
+		amountToSave: number,
+		currentAmountSaved: number,
+		firstSaving: Date,
+		frequency: string
+	) => void;
 };
 
 export const PlanSidebar = (props: PlanSidebarProps) => {
-	const toast = useToast();
-
 	const categoryColor = useColorModeValue('gray.800', 'gray.200');
-
-	function formatToDateString(date?: Date) {
-		if (!date) return '';
-		// format to yyyy-mm-dd
-		return date.toISOString().split('T')[0];
-	}
 
 	const [savedAmount, setSavedAmount] = useState(0);
 	const handleSavedAmountChange = (value: string) =>
@@ -44,6 +38,15 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 	const handleAmountToSaveChange = (value: string) =>
 		setAmountToSave(Number(value));
 
+	const [firstSaving, setFirstSaving] = useState(new Date());
+	const handleFirstSavingChange = (event: any) =>
+		setFirstSaving(new Date(event.target.value));
+
+	const [frequency, setFrequency] = useState('SOM');
+	const handleFrequencyChange = (event: any) => {
+		setFrequency(event.target.value);
+	};
+
 	useEffect(() => {
 		setSavedAmount(props.plan?.currentAmountSaved ?? 0);
 	}, [props.plan?.currentAmountSaved]);
@@ -51,6 +54,30 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 	useEffect(() => {
 		setAmountToSave(props.plan?.amountToSave ?? 0);
 	}, [props.plan?.amountToSave]);
+
+	useEffect(() => {
+		setFirstSaving(props.plan?.firstSaving ?? new Date());
+	}, [props.plan?.firstSaving]);
+
+	useEffect(() => {
+		setFrequency(props.plan?.frequency ?? 'SOM');
+	}, [props.plan?.frequency]);
+
+	const submitPlanSettingsChange = () => {
+		if (
+			amountToSave !== props.plan?.amountToSave ||
+			savedAmount !== props.plan?.currentAmountSaved ||
+			firstSaving !== props.plan?.firstSaving ||
+			frequency !== props.plan?.frequency
+		) {
+			props.onPlanSettingsChange(
+				amountToSave,
+				savedAmount,
+				firstSaving,
+				frequency
+			);
+		}
+	};
 
 	return (
 		<Stack
@@ -64,16 +91,7 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 			<Stack>
 				<Button
 					colorScheme={'purple'}
-					onClick={() =>
-						toast({
-							title: 'Plan settings updated successfully',
-							description: "Plan's settings have been updated",
-							status: 'success',
-							duration: 2000,
-							isClosable: true,
-							position: 'top',
-						})
-					}
+					onClick={submitPlanSettingsChange}
 				>
 					Update
 				</Button>
@@ -84,6 +102,7 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 					fontWeight={700}
 					fontSize={'sm'}
 					letterSpacing={1}
+					pt={0.5}
 				>
 					Amount Saved
 				</Text>
@@ -108,16 +127,7 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 						<InputRightAddon>DKK</InputRightAddon>
 					</InputGroup>
 				</Tooltip>
-				<Tooltip
-					hasArrow
-					label="Auto-update savings based on amount to save and interval"
-					placement="auto"
-				>
-					<Center>
-						<Checkbox defaultChecked>Auto-update savings</Checkbox>
-					</Center>
-				</Tooltip>
-				<Divider />
+
 				<Text
 					align={'center'}
 					textTransform={'uppercase'}
@@ -141,12 +151,6 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 							min={0}
 							value={amountToSave}
 							onChange={handleAmountToSaveChange}
-							onBlur={() => {
-								// TODO: how do we update the plan?
-								if (props.plan?.amountToSave) {
-									props.plan.amountToSave = amountToSave;
-								}
-							}}
 						>
 							<NumberInputField />
 							<NumberInputStepper>
@@ -165,26 +169,6 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 					fontSize={'sm'}
 					letterSpacing={1}
 				>
-					First Saving
-				</Text>
-				<Tooltip hasArrow label="Date of first saving" placement="auto">
-					<Input
-						placeholder="Select Date and Time"
-						size="md"
-						type="date"
-						defaultValue={formatToDateString(
-							props.plan?.firstSaving
-						)}
-					/>
-				</Tooltip>
-				<Text
-					align={'center'}
-					textTransform={'uppercase'}
-					color={categoryColor}
-					fontWeight={500}
-					fontSize={'sm'}
-					letterSpacing={1}
-				>
 					Savings Frequency
 				</Text>
 				<Tooltip
@@ -192,10 +176,7 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 					label="Frequency of current amount saved updated based on Savings Amount"
 					placement="auto"
 				>
-					<Select
-						placeholder={props.plan?.frequency ?? 'Select option'}
-						defaultValue={props.plan?.frequency}
-					>
+					<Select value={frequency} onChange={handleFrequencyChange}>
 						<option value="som">Start of month</option>
 						<option value="eom">End of month</option>
 						<option value="ed">Every day</option>
@@ -203,6 +184,32 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 						<option value="e14d">Every 14th day</option>
 					</Select>
 				</Tooltip>
+				{frequency !== 'som' && frequency !== 'eom' && (
+					<>
+						<Text
+							align={'center'}
+							textTransform={'uppercase'}
+							color={categoryColor}
+							fontWeight={500}
+							fontSize={'sm'}
+							letterSpacing={1}
+						>
+							First Saving
+						</Text>
+						<Tooltip
+							hasArrow
+							label="Date of first saving"
+							placement="auto"
+						>
+							<Input
+								size="md"
+								type="date"
+								value={firstSaving.toISOString().split('T')[0]}
+								onChange={handleFirstSavingChange}
+							/>
+						</Tooltip>
+					</>
+				)}
 			</Stack>
 		</Stack>
 	);
