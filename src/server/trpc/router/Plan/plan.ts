@@ -8,6 +8,7 @@ import { protectedProcedure, router } from '../../trpc';
 
 export interface PlanWishType extends Wish {
 	placement: number;
+	sumOfMoney: number;
 }
 
 export const planRouter = router({
@@ -33,10 +34,14 @@ export const planRouter = router({
 					include: { wish: true },
 				})
 				.then((planWishes) => {
+					let currentSum = 0;
 					return planWishes.map((planWish) => {
+						const wishSum = currentSum + planWish.wish.price;
+						currentSum = wishSum;
 						return {
 							...planWish.wish,
 							placement: planWish.placement,
+							sumOfMoney: wishSum,
 						};
 					});
 				});

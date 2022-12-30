@@ -33,6 +33,7 @@
 		"classnames": "^2.3.2",
 		"framer-motion": "^7.6.19",
 		"lodash": "^4.17.21",
+		"moment": "^2.29.4",
 		"next": "13.0.2",
 		"next-auth": "4.17.0",
 		"next-pwa": "^5.6.0",

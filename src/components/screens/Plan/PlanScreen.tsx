@@ -1,5 +1,4 @@
 import {
-	Button,
 	Center,
 	Container,
 	Flex,
@@ -10,18 +9,21 @@ import {
 import { EmptyStateWrapper } from '@components/EmptyStateWrapper';
 import { Content } from '@components/layouts/Content';
 import { PlanSidebar } from '@components/screens/Plan/PlanSidebar';
-import { SortableItem } from '@components/screens/Plan/SortableItem';
+import type { SortablePlanWishType } from '@components/screens/Plan/PlanWish';
+import { PlanWishComponent } from '@components/screens/Plan/PlanWish';
 import { WishModal } from '@components/screens/WishList/WishModal';
-import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
+import { closestCenter, DndContext } from '@dnd-kit/core';
 import {
 	arrayMove,
 	SortableContext,
 	verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import type { Plan } from '@prisma/client';
 import type { PlanWishType } from '@server/trpc/router/Plan/plan';
 import { trpc } from '@utils/trpc';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { updatePlacement } from './planUtils';
 
 export const PlanScreen = () => {
 	const toast = useToast();
@@ -81,7 +83,7 @@ export const PlanScreen = () => {
 					spacing={{ base: 0, lg: 8 }}
 				>
 					<EmptyStateWrapper
-						isLoading={isLoading}
+						isLoading={isLoading && isLoadingCurrency}
 						data={plan}
 						EmptyComponent={
 							<Center>
@@ -104,57 +106,89 @@ export const PlanScreen = () => {
 						w={'full'}
 						maxW={{ lg: 'calc(100% - 16rem)' }}
 					>
-						<Content>
-							<Center>
-								<WishModal
-									buttonProps={{
-										variant: 'solid',
-										colorScheme: 'green',
-									}}
-									buttonName="Add a wish"
-									onSubmit={onSubmit}
-								/>
-							</Center>
-							<Flex justifyContent="right" mb={4}>
-								<Button
-									colorScheme={'blue'}
-									onClick={() =>
-										toast({
-											title: 'Plan saved successfully',
-											description:
-												"We've updated your plan.",
-											status: 'success',
-											duration: 2000,
-											isClosable: true,
-											position: 'top',
-										})
-									}
-								>
-									Save
-								</Button>
-							</Flex>
-
-							<DndContext
-								collisionDetection={closestCenter}
-								onDragEnd={handleDragEnd}
-							>
-								<Stack spacing={4}>
-									<SortableContext
-										items={stateWishes}
-										strategy={verticalListSortingStrategy}
+						<EmptyStateWrapper
+							isLoading={isLoadingWishes && isLoadingCurrency}
+							data={plan}
+							EmptyComponent={
+								<Center>
+									<Tag
+										size={'lg'}
+										variant="solid"
+										colorScheme="teal"
 									>
-										{/* We need components that use the useSortable hook */}
-										{stateWishes.map((wish) => (
-											<SortableItem
-												key={wish.id}
-												wish={wish}
-												currency={currency ?? ''}
-											/>
-										))}
-									</SortableContext>
-								</Stack>
-							</DndContext>
-						</Content>
+										No Plan
+									</Tag>
+								</Center>
+							}
+							NonEmptyComponent={
+								<Content>
+									<Center>
+										<WishModal
+											buttonProps={{
+												variant: 'solid',
+												colorScheme: 'green',
+											}}
+											buttonName="Add a wish"
+											onSubmit={onSubmit}
+										/>
+									</Center>
+									<Flex justifyContent="right" mb={4}></Flex>
+
+									<DndContext
+										collisionDetection={closestCenter}
+										onDragEnd={handleDragEnd}
+									>
+										<Stack spacing={4}>
+											<SortableContext
+												items={stateWishes}
+												strategy={
+													verticalListSortingStrategy
+												}
+											>
+												<>
+													{/* We need components that use the useSortable hook */}
+													{stateWishes.map((wish) => {
+														return (
+															<PlanWishComponent
+																key={wish.id}
+																wish={addTimeLeftAndPercentage(
+																	plan ??
+																		undefined,
+																	wish
+																)}
+																currency={
+																	currency ??
+																	''
+																}
+																onPlacementChange={(
+																	newIndex,
+																	oldIndex
+																) => {
+																	relocateWish
+																		.mutateAsync(
+																			{
+																				planId: 'clc87ke8v00009muo690pm3fn',
+																				wishId: wish.id,
+																				newIndex,
+																				oldIndex,
+																			}
+																		)
+																		.then(
+																			() => {
+																				refetchWishLists();
+																			}
+																		);
+																}}
+															/>
+														);
+													})}
+												</>
+											</SortableContext>
+										</Stack>
+									</DndContext>
+								</Content>
+							}
+						/>
 					</Flex>
 				</Stack>
 			</Container>
@@ -176,26 +210,162 @@ export const PlanScreen = () => {
 				const oldWish = items.find((e) => e.id === active.id);
 				const newWish = items.find((e) => e.id === over.id);
 
-				relocateWish.mutateAsync({
-					planId: 'clc87ke8v00009muo690pm3fn',
-					wishId: active.id.toString(),
-					oldIndex: oldWish?.placement ?? 0,
-					newIndex: newWish?.placement ?? 0,
-				});
+				relocateWish
+					.mutateAsync({
+						planId: 'clc87ke8v00009muo690pm3fn',
+						wishId: active.id.toString(),
+						oldIndex: oldWish?.placement ?? 0,
+						newIndex: newWish?.placement ?? 0,
+					})
+					.then(async () => {
+						await refetchWishLists();
+					});
 
-				// sort items in ascending order based on placement
-				items = items.sort((a, b) => a.placement - b.placement);
-
-				items = updatePlacement(
-					items,
-					oldWish?.placement ?? 0,
-					newWish?.placement ?? 0
-				) as PlanWishType[];
-
-				const activeIndex = items.map((e) => e.id).indexOf(active.id.toString());
-				const overIndex = items.map((e) => e.id).indexOf(over.id.toString());
+				const activeIndex = items
+					.map((e) => e.id)
+					.indexOf(active.id.toString());
+				const overIndex = items
+					.map((e) => e.id)
+					.indexOf(over.id.toString());
 				return arrayMove(items, activeIndex, overIndex);
 			});
+		}
+	}
+
+	function addTimeLeftAndPercentage(
+		plan: Plan | undefined,
+		wish: PlanWishType
+	): SortablePlanWishType {
+		if (plan === undefined) {
+			return {
+				...wish,
+				timeLeft: {
+					text: '',
+					isPurchaseable: false,
+				},
+				percentage: 0,
+			};
+		}
+
+		const percentage = calculatePercentage(plan, wish);
+		const intervalsLeft = calculateIntervalsLeft(plan, wish);
+		const timeLeftText = intervalsLeftText(plan, intervalsLeft);
+
+		const timeLeft = {
+			text: timeLeftText,
+			isPurchaseable: wish.sumOfMoney - plan.currentAmountSaved <= 0,
+		};
+
+		return {
+			...wish,
+			timeLeft,
+			percentage,
+		};
+	}
+
+	function calculatePercentage(plan: Plan | undefined, wish: PlanWishType) {
+		if (plan === undefined) {
+			return 0;
+		}
+
+		const percentage = (plan.currentAmountSaved / wish.sumOfMoney) * 100;
+
+		return percentage;
+	}
+
+	function calculateIntervalsLeft(
+		plan: Plan | undefined,
+		wish: PlanWishType
+	) {
+		if (plan === undefined) {
+			return 0;
+		}
+
+		const remainingPrice = wish.sumOfMoney - plan.currentAmountSaved;
+
+		const intervalsLeft = remainingPrice / plan.amountToSave;
+
+		return Math.ceil(intervalsLeft);
+	}
+
+	function intervalsLeftText(plan: Plan, intervalsLeft: number) {
+		if (intervalsLeft <= 0) {
+			return 'You can buy this now!';
+		}
+
+		const frequency = plan.frequency.toLowerCase();
+		const firstSavingDate = plan.firstSaving;
+
+		// calculate next saving date based on the frequency
+		const nextSavingDate = calculateNextSavingDate(
+			intervalsLeft,
+			frequency,
+			firstSavingDate
+		);
+
+		console.log('nextSavingDate', nextSavingDate);
+
+		const today = new Date();
+		const m1 = moment(today);
+		const m2 = moment(nextSavingDate);
+		const timeLeftText = moment.duration(m1.diff(m2)).humanize();
+
+		return `${timeLeftText} left`;
+	}
+
+	function calculateNextSavingDate(
+		intervalsLeft: number,
+		frequency: string,
+		firstSavingDate: Date
+	) {
+		const today = new Date();
+		const firstSaving = new Date(firstSavingDate);
+		const daysSinceFirstSaving = Math.floor(
+			(today.getTime() - firstSaving.getTime()) / (1000 * 60 * 60 * 24)
+		);
+		console.log('intervalsLeft', intervalsLeft);
+
+		switch (frequency) {
+			case 'som':
+				return new Date(
+					today.getFullYear(),
+					today.getMonth() + 1 * intervalsLeft,
+					1
+				);
+			case 'eom':
+				return new Date(
+					today.getFullYear(),
+					today.getMonth() + 1 * intervalsLeft,
+					0
+				);
+			case 'ed':
+				return new Date(
+					today.getFullYear(),
+					today.getMonth(),
+					today.getDate() + 1 * intervalsLeft
+				);
+			case 'ew':
+				const daysSinceLastWeeklySaving = daysSinceFirstSaving % 7;
+				const daysUntilNextWeeklySaving = 7 - daysSinceLastWeeklySaving;
+				return new Date(
+					today.getFullYear(),
+					today.getMonth(),
+					today.getDate() + daysUntilNextWeeklySaving * intervalsLeft
+				);
+			case 'e14d':
+				const daysSinceLast14DaySaving = daysSinceFirstSaving % 14;
+				const daysUntilNext14DaySaving = 14 - daysSinceLast14DaySaving;
+				return new Date(
+					today.getFullYear(),
+					today.getMonth(),
+					today.getDate() + daysUntilNext14DaySaving * intervalsLeft
+				);
+			default:
+				return new Date(
+					today.getFullYear(),
+					today.getMonth(),
+					today.getDate()
+				);
 		}
 	}
 };

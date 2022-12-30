@@ -204,12 +204,6 @@ export const PlanSidebar = (props: PlanSidebarProps) => {
 						<option value="ed">Every day</option>
 						<option value="ew">Every week</option>
 						<option value="e14d">Every 14th day</option>
-						<option value="em">Every Month</option>
-						<option value="e2m">Every 2 Months</option>
-						<option value="e3m">Every 3 Months</option>
-						<option value="e4m">Every 4 Months</option>
-						<option value="e6m">Every 6 Months</option>
-						<option value="ey">Every year</option>
 					</Select>
 				</Tooltip>
 			</Stack>

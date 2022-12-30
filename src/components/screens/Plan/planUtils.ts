@@ -7,12 +7,6 @@ export const SavingsFrequency = {
 	ED: 'ED',
 	EW: 'EW',
 	E14D: 'E14D',
-	EM: 'EM',
-	E2M: 'E2M',
-	E3M: 'E3M',
-	E4M: 'E4M',
-	E6M: 'E6M',
-	EY: 'EY',
 } as const;
 
 export function updatePlacement(

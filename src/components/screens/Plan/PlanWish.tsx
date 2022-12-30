@@ -20,20 +20,48 @@ import {
 } from '@chakra-ui/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { PlanWishType } from '@server/trpc/router/Plan/plan';
+import type { PlanWishType } from '@server/trpc/router/Plan/plan';
+import { useEffect, useState } from 'react';
+
+export interface SortablePlanWishType extends PlanWishType {
+	timeLeft: {
+		text: string;
+		isPurchaseable: boolean;
+	};
+	percentage: number;
+}
 
 type SortableItemProps = {
-	wish: PlanWishType;
+	wish: SortablePlanWishType;
 	currency: string;
+	onPlacementChange: (oldIndex: number, newIndex: number) => void;
 };
 
-export function SortableItem(props: SortableItemProps) {
+export function PlanWishComponent(props: SortableItemProps) {
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({ id: props.wish.id });
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
+	};
+
+	const [placement, setPlacement] = useState(0);
+	const handlePlacementChange = (value: string) =>
+		setPlacement(Number(value));
+
+	useEffect(() => {
+		setPlacement(props.wish.placement);
+	}, [props.wish.placement]);
+
+	const tagColorScheme = props.wish.timeLeft.isPurchaseable
+		? 'green'
+		: 'purple';
+
+	const submitPlacementChange = () => {
+		if (placement !== props.wish.placement) {
+			props.onPlacementChange(props.wish.placement, placement);
+		}
 	};
 
 	return (
@@ -43,7 +71,21 @@ export function SortableItem(props: SortableItemProps) {
 				background={useColorModeValue('gray.100', 'gray.700')}
 			>
 				<Center ml={2}>
-					<NumberInput defaultValue={props.wish.placement} w={85} p={0} m={0}>
+					<NumberInput
+						defaultValue={props.wish.placement}
+						value={placement}
+						onChange={handlePlacementChange}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') {
+								submitPlacementChange();
+							}
+						}}
+						onBlur={submitPlacementChange}
+						onFocus={(e) => e.target.select()}
+						w={85}
+						p={0}
+						m={0}
+					>
 						<NumberInputField />
 						<NumberInputStepper>
 							<NumberIncrementStepper />
@@ -67,8 +109,8 @@ export function SortableItem(props: SortableItemProps) {
 							mt={-0.1}
 						/>
 						<Box flex="1" gap="2" alignItems="center" maxW={'85%'}>
-							<Tag colorScheme="purple" size={'lg'}>
-								3 days left
+							<Tag colorScheme={tagColorScheme} size={'lg'}>
+								{props.wish.timeLeft.text}
 							</Tag>
 							<Heading
 								maxW={'70%'}
@@ -113,7 +155,11 @@ export function SortableItem(props: SortableItemProps) {
 							</Text>
 						</Box>
 					</Flex>
-					<Progress mt={2} colorScheme={'purple'} value={80} />
+					<Progress
+						mt={2}
+						colorScheme={'purple'}
+						value={props.wish.percentage}
+					/>
 				</CardBody>
 				<Center mr={2}>
 					<IconButton
