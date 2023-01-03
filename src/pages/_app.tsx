@@ -5,6 +5,7 @@ import { type AppType } from 'next/app';
 import { trpc } from '../utils/trpc';
 
 import { ChakraProvider } from '@chakra-ui/react';
+import { Analytics } from '@vercel/analytics/react';
 import { AnimatePresence } from 'framer-motion';
 import Head from 'next/head';
 import Fonts from '../components/common/Theme/Fonts';
@@ -90,6 +91,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 						}}
 					>
 						<Component {...pageProps} key={router.route} />
+						<Analytics />
 					</AnimatePresence>
 				</Layout>
 			</ChakraProvider>
