@@ -37,9 +37,7 @@ export const PlanScreen = () => {
 		data: wishes,
 		isLoading: isLoadingWishes,
 		refetch: refetchWishLists,
-	} = trpc.plan.getWishes.useQuery({
-		planId: 'clc87ke8v00009muo690pm3fn',
-	});
+	} = trpc.plan.getWishes.useQuery();
 
 	const {
 		data: currency,
@@ -51,9 +49,13 @@ export const PlanScreen = () => {
 
 	const createAndAddWish = trpc.plan.createAndAddWish.useMutation();
 
+	const editWish = trpc.plan.editWish.useMutation();
+
 	const relocateWish = trpc.plan.relocateWish.useMutation();
 
 	const updatePlanSettings = trpc.plan.updatePlan.useMutation();
+
+	const deleteWish = trpc.plan.deleteWish.useMutation();
 
 	const onPlanSettingsChange = async (
 		amountToSave: number,
@@ -63,7 +65,6 @@ export const PlanScreen = () => {
 	) => {
 		await updatePlanSettings
 			.mutateAsync({
-				planId: 'clc87ke8v00009muo690pm3fn',
 				amountToSave,
 				currentAmountSaved,
 				firstSaving,
@@ -71,6 +72,7 @@ export const PlanScreen = () => {
 			})
 			.then(async () => {
 				await refetchPlan();
+				await refetchCurrency();
 				await refetchWishLists();
 				toast({
 					title: 'Plan updated',
@@ -78,6 +80,7 @@ export const PlanScreen = () => {
 					status: 'success',
 					duration: 5000,
 					isClosable: true,
+					position: 'top',
 				});
 			})
 			.catch((err) => {
@@ -87,6 +90,7 @@ export const PlanScreen = () => {
 					status: 'error',
 					duration: 5000,
 					isClosable: true,
+					position: 'top',
 				});
 			});
 	};
@@ -104,7 +108,6 @@ export const PlanScreen = () => {
 	) => {
 		await createAndAddWish
 			.mutateAsync({
-				planId: 'clc87ke8v00009muo690pm3fn',
 				wishTitle: title,
 				wishDescription: description ?? '',
 				wishPrice: price,
@@ -113,12 +116,14 @@ export const PlanScreen = () => {
 			})
 			.then(async () => {
 				await refetchWishLists();
+				await refetchCurrency();
 				toast({
 					title: 'Wish created',
 					description: `${title} been added to your plan`,
 					status: 'success',
 					duration: 5000,
 					isClosable: true,
+					position: 'top',
 				});
 			})
 			.catch((err) => {
@@ -128,6 +133,79 @@ export const PlanScreen = () => {
 					status: 'error',
 					duration: 5000,
 					isClosable: true,
+					position: 'top',
+				});
+			});
+	};
+
+	const onEdit = async (
+		wishId: string,
+		title: string,
+		description: string,
+		url: string,
+		imageUrl: string,
+		price: number,
+		placement: number
+	) => {
+		await editWish
+			.mutateAsync({
+				wishId,
+				wishTitle: title,
+				wishDescription: description ?? '',
+				wishPrice: price,
+				wishUrl: url,
+				wishImageUrl: imageUrl,
+				placement: placement,
+			})
+			.then(async () => {
+				await refetchWishLists();
+				await refetchCurrency();
+				toast({
+					title: 'Wish updated',
+					description: `${title} been updated`,
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+			})
+			.catch((err) => {
+				toast({
+					title: 'Error',
+					description: err.message,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+			});
+	};
+
+	const onWishDelete = async (wishId: string, index: number) => {
+		await deleteWish
+			.mutateAsync({
+				wishId,
+			})
+			.then(async () => {
+				await refetchWishLists();
+				await refetchCurrency();
+				toast({
+					title: 'Wish deleted',
+					description: `Your wish has been deleted`,
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+			})
+			.catch((err) => {
+				toast({
+					title: 'Error',
+					description: err.message,
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
 				});
 			});
 	};
@@ -220,25 +298,13 @@ export const PlanScreen = () => {
 																	currency ??
 																	''
 																}
-																onPlacementChange={(
-																	newIndex,
-																	oldIndex
-																) => {
-																	relocateWish
-																		.mutateAsync(
-																			{
-																				planId: 'clc87ke8v00009muo690pm3fn',
-																				wishId: wish.id,
-																				newIndex,
-																				oldIndex,
-																			}
-																		)
-																		.then(
-																			() => {
-																				refetchWishLists();
-																			}
-																		);
-																}}
+																onPlacementChange={
+																	handlePlacementChange
+																}
+																onDelete={
+																	onWishDelete
+																}
+																onEdit={onEdit}
 															/>
 														);
 													})}
@@ -255,6 +321,32 @@ export const PlanScreen = () => {
 		</>
 	);
 
+	function handlePlacementChange(
+		wishId: string,
+		newIndex: number,
+		oldIndex: number
+	) {
+		relocateWish
+			.mutateAsync({
+				wishId: wishId,
+				oldIndex: newIndex,
+				newIndex: oldIndex,
+			})
+			.then(async () => {
+				await refetchWishLists();
+				await refetchCurrency();
+				toast({
+					title:
+						'Wish moved from ' + oldIndex + ' to ' + newIndex + '.',
+					description: 'Your wish has been moved',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+			});
+	}
+
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event;
 		if (over === null) {
@@ -267,18 +359,18 @@ export const PlanScreen = () => {
 					return [];
 				}
 
-				const oldWish = items.find((e) => e.id === active.id);
-				const newWish = items.find((e) => e.id === over.id);
+				const oldWish = items.find((e) => e.id === over.id);
+				const newWish = items.find((e) => e.id === active.id);
 
 				relocateWish
 					.mutateAsync({
-						planId: 'clc87ke8v00009muo690pm3fn',
 						wishId: active.id.toString(),
-						oldIndex: oldWish?.placement ?? 0,
-						newIndex: newWish?.placement ?? 0,
+						oldIndex: newWish?.placement ?? 0,
+						newIndex: oldWish?.placement ?? 0,
 					})
 					.then(async () => {
 						await refetchWishLists();
+						await refetchCurrency();
 					});
 
 				const activeIndex = items

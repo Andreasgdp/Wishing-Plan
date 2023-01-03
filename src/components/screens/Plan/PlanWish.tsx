@@ -1,13 +1,33 @@
-import { DragHandleIcon } from '@chakra-ui/icons';
+import {
+	DeleteIcon,
+	DragHandleIcon,
+	EditIcon,
+	HamburgerIcon,
+} from '@chakra-ui/icons';
 import {
 	Box,
+	Button,
 	Card,
 	CardBody,
 	Center,
 	Flex,
+	FormControl,
+	FormLabel,
 	Heading,
 	IconButton,
 	Image,
+	Input,
+	Menu,
+	MenuButton,
+	MenuItem,
+	MenuList,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
 	NumberDecrementStepper,
 	NumberIncrementStepper,
 	NumberInput,
@@ -16,12 +36,16 @@ import {
 	Progress,
 	Tag,
 	Text,
+	Textarea,
 	useColorModeValue,
+	useDisclosure,
 } from '@chakra-ui/react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { PlanWishType } from '@server/trpc/router/Plan/plan';
+import { trpc } from '@utils/trpc';
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 export interface SortablePlanWishType extends PlanWishType {
 	timeLeft: {
@@ -34,10 +58,58 @@ export interface SortablePlanWishType extends PlanWishType {
 type SortableItemProps = {
 	wish: SortablePlanWishType;
 	currency: string;
-	onPlacementChange: (oldIndex: number, newIndex: number) => void;
+	onPlacementChange: (
+		wishId: string,
+		oldIndex: number,
+		newIndex: number
+	) => void;
+	onDelete: (id: string, index: number) => void;
+	onEdit: (
+		wishId: string,
+		title: string,
+		description: string,
+		url: string,
+		imageUrl: string,
+		price: number,
+		placement: number
+	) => void;
+};
+
+export type WishPlanForm = {
+	title: string;
+	description?: string;
+	price: string;
+	url: string;
+	imageUrl: string;
 };
 
 export function PlanWishComponent(props: SortableItemProps) {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const { register, handleSubmit, reset, getValues, setValue } =
+		useForm<WishPlanForm>();
+
+	const [priceValue, setPriceValue] = useState('0');
+	const [descriptionValue, setDescriptionValue] = useState('');
+
+	const scrapeProduct = trpc.scraping.get.useMutation();
+
+	const onGetProductData = async () => {
+		const values = getValues();
+		const url = values.url;
+
+		if (!url) return;
+
+		const scrapingData = await scrapeProduct.mutateAsync({
+			url: url,
+		});
+		if (!scrapingData) return;
+
+		setValue('title', scrapingData.title);
+		setPriceValue(scrapingData.price.toString());
+		setValue('imageUrl', scrapingData.imageUrl ?? '');
+	};
+
 	const { attributes, listeners, setNodeRef, transform, transition } =
 		useSortable({ id: props.wish.id });
 
@@ -46,9 +118,10 @@ export function PlanWishComponent(props: SortableItemProps) {
 		transition,
 	};
 
-	const [placement, setPlacement] = useState(0);
-	const handlePlacementChange = (value: string) =>
+	const [placement, setPlacement] = useState(1);
+	const handlePlacementChange = (value: string) => {
 		setPlacement(Number(value));
+	};
 
 	useEffect(() => {
 		setPlacement(props.wish.placement);
@@ -59,9 +132,50 @@ export function PlanWishComponent(props: SortableItemProps) {
 		: 'purple';
 
 	const submitPlacementChange = () => {
-		if (placement !== props.wish.placement) {
-			props.onPlacementChange(props.wish.placement, placement);
+		if (placement === props.wish.placement) {
+			return;
 		}
+
+		if (placement < 1) {
+			return;
+		}
+
+		// if placement not a number
+		if (isNaN(placement)) {
+			return;
+		}
+		props.onPlacementChange(props.wish.id, props.wish.placement, placement);
+	};
+
+	const onSubmit = handleSubmit(async (data) => {
+		props.onEdit(
+			props.wish.id,
+			data.title,
+			descriptionValue,
+			data.url,
+			data.imageUrl,
+			Number(priceValue),
+			props.wish.placement
+		);
+		reset();
+		setDescriptionValue('');
+		setPriceValue('0');
+		onClose();
+	});
+
+	const openModal = () => {
+		setValue('title', props.wish.title);
+		setDescriptionValue(props.wish.description ?? '');
+		setValue('url', props.wish.url);
+		setValue('imageUrl', props.wish.imageUrl ?? '');
+		setPriceValue(props.wish.price.toString());
+		onOpen();
+	};
+
+	const handleDescriptionChange = (
+		e: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
+		setDescriptionValue(e.target.value);
 	};
 
 	return (
@@ -85,6 +199,7 @@ export function PlanWishComponent(props: SortableItemProps) {
 						w={85}
 						p={0}
 						m={0}
+						min={1}
 					>
 						<NumberInputField />
 						<NumberInputStepper>
@@ -161,16 +276,129 @@ export function PlanWishComponent(props: SortableItemProps) {
 						value={props.wish.percentage}
 					/>
 				</CardBody>
+
 				<Center mr={2}>
 					<IconButton
 						ref={setNodeRef}
 						{...listeners}
 						{...attributes}
-						aria-label="Search database"
+						aria-label="Drag to reorder"
 						icon={<DragHandleIcon />}
+						mr={-14}
 					/>
 				</Center>
+				<Menu>
+					<MenuButton
+						as={IconButton}
+						aria-label="Options"
+						icon={<HamburgerIcon />}
+						variant="outline"
+						mt={2}
+						mr={2}
+					/>
+					<MenuList>
+						<MenuItem
+							icon={<EditIcon />}
+							command="⌘E"
+							onClick={openModal}
+						>
+							Edit
+						</MenuItem>
+						<MenuItem
+							icon={<DeleteIcon />}
+							command="⌘D"
+							onClick={() =>
+								props.onDelete(
+									props.wish.id,
+									props.wish.placement
+								)
+							}
+						>
+							Delete
+						</MenuItem>
+					</MenuList>
+				</Menu>
 			</Card>
+			<Modal isOpen={isOpen} onClose={onClose}>
+				<ModalOverlay />
+
+				<ModalContent>
+					<ModalHeader>
+						<ModalCloseButton />
+					</ModalHeader>
+
+					<ModalBody>
+						<form id="new-note" onSubmit={onSubmit}>
+							<FormControl>
+								<FormLabel>URL for Wish</FormLabel>
+								<Input
+									id="url"
+									type="url"
+									{...register('url')}
+								/>
+							</FormControl>
+							<FormControl>
+								<Center mt={6} mb={2}>
+									<Button onClick={onGetProductData}>
+										Get Data From URL
+									</Button>
+								</Center>
+							</FormControl>
+							<FormControl>
+								<FormLabel>URL for Image</FormLabel>
+								<Input
+									id="imageUrl"
+									type="url"
+									{...register('imageUrl')}
+								/>
+							</FormControl>
+							<FormControl isRequired>
+								<FormLabel>Name of Wish</FormLabel>
+								<Input
+									id="title"
+									type="text"
+									{...register('title')}
+								/>
+							</FormControl>
+							<FormControl isRequired>
+								<FormLabel>Price of your Wish</FormLabel>
+
+								<NumberInput
+									id="price"
+									{...register('price')}
+									onChange={(valueString) =>
+										setPriceValue(valueString)
+									}
+									value={priceValue}
+									max={100000000}
+									min={0}
+								>
+									<NumberInputField />
+									<NumberInputStepper>
+										<NumberIncrementStepper />
+										<NumberDecrementStepper />
+									</NumberInputStepper>
+								</NumberInput>
+							</FormControl>
+							<FormControl>
+								<FormLabel>Describe your Wish</FormLabel>
+								<Textarea
+									value={descriptionValue}
+									onChange={handleDescriptionChange}
+									placeholder="Here is a sample placeholder"
+									size="sm"
+								/>
+							</FormControl>
+						</form>
+					</ModalBody>
+
+					<ModalFooter>
+						<Button type="submit" form="new-note">
+							Submit
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
 		</div>
 	);
 }

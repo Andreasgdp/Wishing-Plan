@@ -32,3 +32,16 @@ export function updatePlacement(
 
 	return planWishes;
 }
+
+export function removePlacement(
+	planWishes: PlanWish[] | PlanWishType[],
+	index: number
+) {
+	for (const planWish of planWishes) {
+		if (planWish.placement > index) {
+			planWish.placement--;
+		}
+	}
+
+	return planWishes;
+}
