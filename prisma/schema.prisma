@@ -81,6 +81,7 @@ model User {
   wishes          Wish[]
   wishLists       WishList[]    @relation("WishLists")
   sharedWishLists WishList[]    @relation("SharedWishLists")
+  plans           Plan[]
 }
 
 model UserSettings {
@@ -94,22 +95,55 @@ model UserSettings {
   @@index([userId])
 }
 
+model Plan {
+  id                    String   @id @default(cuid())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  currentAmountSaved    Int
+  amountToSave          Int
+  firstSaving           DateTime
+  frequency             String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String   @unique
+  wishes                Wish[]
+  wishBridges           PlanWish[]
+
+  @@index([userId])
+}
+
+model PlanWish {
+  id      String   @id @default(cuid())
+  plan    Plan     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId  String
+  wish    Wish     @relation(fields: [wishId], references: [id], onDelete: Cascade)
+  wishId  String
+  placement Int
+
+  @@index([planId])
+  @@index([wishId])
+	@@map("PlanWishBridge")
+}
+
 model Wish {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   title       String
   description String?
   price       Int
   url         String
   imageUrl    String?
-  creator     User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  creator     User      @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   creatorId   String
-  wishList    WishList @relation(fields: [wishListId], references: [id], onDelete: Cascade)
-  wishListId  String
+  wishList    WishList? @relation(fields: [wishListId], references: [id], onDelete: Cascade)
+  wishListId  String?
+  plan        Plan?     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId      String?
+  wishBridges PlanWish[]
 
   @@index([creatorId])
   @@index([wishListId])
+  @@index([planId])
 }
 
 model WishList {

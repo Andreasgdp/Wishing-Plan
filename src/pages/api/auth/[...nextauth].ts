@@ -7,32 +7,13 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 import { env } from '@env/server.mjs';
 import { prisma } from '@server/db/client';
+import { signInChecks } from '@server/trpc/utils/auth/signInUtils';
 
 export const authOptions: NextAuthOptions = {
 	// Include user.id on session
 	callbacks: {
 		async signIn({ user }) {
-			if (user.name) {
-				const settings = await prisma.userSettings.findFirst({
-					where: {
-						userId: user.id,
-					},
-				});
-
-				if (!settings) {
-					// create settings in prisma
-					await prisma.userSettings.create({
-						data: {
-							userId: user.id,
-							currency: 'USD',
-						},
-					});
-				}
-				return true;
-			} else {
-				// User has no custom name yet, redirect him
-				return '/userInfo';
-			}
+			return await signInChecks(user);
 		},
 		session({ session, user }) {
 			if (session.user) {

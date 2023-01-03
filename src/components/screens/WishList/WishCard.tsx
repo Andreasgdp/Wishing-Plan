@@ -10,6 +10,7 @@ import {
 	Stack,
 	Tag,
 	Text,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import { DeleteAlert } from '@components/common/Alert/DeleteAlert';
 import { EmptyStateWrapper } from '@components/EmptyStateWrapper';
@@ -74,7 +75,10 @@ export const WishCard = ({
 					</Center>
 				}
 				NonEmptyComponent={
-					<Card maxW={'30rem'}>
+					<Card
+						maxW={'30rem'}
+						background={useColorModeValue('gray.100', 'gray.700')}
+					>
 						<CardBody>
 							<Center>
 								<Image

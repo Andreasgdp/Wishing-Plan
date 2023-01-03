@@ -145,8 +145,11 @@ function FullMenu({ path }: { path: string }) {
 				</>
 			)) || (
 				<>
-					<LinkItem href="/main-list" path={path}>
-						Main List (Not implemented)
+					<LinkItem href="/plan" path={path}>
+						Plan
+					</LinkItem>
+					<LinkItem href="/shared-plan" path={path}>
+						Shared Plan (Coming Soon)
 					</LinkItem>
 				</>
 			)}
@@ -168,9 +171,17 @@ function CollapsedMenu() {
 				/>
 				<MenuList>
 					{(sessionData && (
-						<MenuItem as={NextLink} href="/settings/profile">
-							Profile
-						</MenuItem>
+						<>
+							<MenuItem as={NextLink} href="/settings/profile">
+								Profile
+							</MenuItem>
+							<MenuItem as={NextLink} href="/plan">
+								Plan
+							</MenuItem>
+							<MenuItem as={NextLink} href="/shared-plan">
+								Shared Plan (Coming Soon)
+							</MenuItem>
+						</>
 					)) || (
 						<>
 							<MenuItem as={NextLink} href="/about">
