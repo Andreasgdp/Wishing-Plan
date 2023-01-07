@@ -2,6 +2,7 @@ import {
 	DeleteIcon,
 	DragHandleIcon,
 	EditIcon,
+	ExternalLinkIcon,
 	HamburgerIcon,
 } from '@chakra-ui/icons';
 import {
@@ -13,6 +14,7 @@ import {
 	Flex,
 	FormControl,
 	FormLabel,
+	Grid,
 	Heading,
 	IconButton,
 	Image,
@@ -277,47 +279,55 @@ export function PlanWishComponent(props: SortableItemProps) {
 					/>
 				</CardBody>
 
-				<Center mr={2}>
+				<Grid ml={2} mr={2}>
+					<Menu>
+						<MenuButton
+							as={IconButton}
+							aria-label="Options"
+							icon={<HamburgerIcon />}
+							variant="outline"
+							mt={2}
+							colorScheme="blue"
+						/>
+						<MenuList>
+							<MenuItem
+								icon={<EditIcon />}
+								command="⌘E"
+								onClick={openModal}
+							>
+								Edit
+							</MenuItem>
+							<MenuItem
+								icon={<DeleteIcon />}
+								command="⌘D"
+								onClick={() =>
+									props.onDelete(
+										props.wish.id,
+										props.wish.placement
+									)
+								}
+							>
+								Delete
+							</MenuItem>
+						</MenuList>
+					</Menu>
 					<IconButton
 						ref={setNodeRef}
 						{...listeners}
 						{...attributes}
 						aria-label="Drag to reorder"
 						icon={<DragHandleIcon />}
-						mr={-14}
 					/>
-				</Center>
-				<Menu>
-					<MenuButton
-						as={IconButton}
-						aria-label="Options"
-						icon={<HamburgerIcon />}
-						variant="outline"
-						mt={2}
-						mr={2}
+					<IconButton
+						onClick={(e) => {
+							e.preventDefault();
+							window.open(props.wish.url, '_blank');
+						}}
+						aria-label="Drag to reorder"
+						icon={<ExternalLinkIcon />}
+						colorScheme="purple"
 					/>
-					<MenuList>
-						<MenuItem
-							icon={<EditIcon />}
-							command="⌘E"
-							onClick={openModal}
-						>
-							Edit
-						</MenuItem>
-						<MenuItem
-							icon={<DeleteIcon />}
-							command="⌘D"
-							onClick={() =>
-								props.onDelete(
-									props.wish.id,
-									props.wish.placement
-								)
-							}
-						>
-							Delete
-						</MenuItem>
-					</MenuList>
-				</Menu>
+				</Grid>
 			</Card>
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
