@@ -1,3 +1,8 @@
+<a href="https://app.zenhub.com/workspaces/mealtime-63451d87af35b0d2cfc42e0c/board"><img src="https://dxssrr2j0sq4w.cloudfront.net/3.2.0/img/external/zenhub-badge.png" alt="ZenHub logo"></a>
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Andreasgdp_Wishing-Plan&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Andreasgdp_Wishing-Plan)
+[![CodeScene Code Health](https://codescene.io/projects/33413/status-badges/code-health)](https://codescene.io/projects/33413)
+[![CodeScene System Mastery](https://codescene.io/projects/33413/status-badges/system-mastery)](https://codescene.io/projects/33413)
+
 # Wishing Plan
 
 Wishing Plan allows you to save your wishes and plan when you can buy them based on the price and the amount of money you set aside each month. The app will then track the your monthly savings and calculate when you are able to purchase your wishes.
