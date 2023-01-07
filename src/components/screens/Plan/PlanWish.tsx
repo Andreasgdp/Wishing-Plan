@@ -326,6 +326,7 @@ export function PlanWishComponent(props: SortableItemProps) {
 						aria-label="Drag to reorder"
 						icon={<ExternalLinkIcon />}
 						colorScheme="purple"
+						disabled={props.wish.url === ''}
 					/>
 				</Grid>
 			</Card>
