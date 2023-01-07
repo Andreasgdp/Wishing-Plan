@@ -27,7 +27,7 @@ Wishting Plan is an open source project. We welcome contributions from the commu
 
 For development management we are using [ZenHub Board](https://app.zenhub.com/workspaces/wishing-plan-637b3ad68b9646001dfac86a/board). It is recommended to install the browser [extension for ZenHub](https://chrome.google.com/webstore/detail/zenhub-for-github/ogcgkffhplmphkaahpmffcafajaocjbd?hl=en), to be able to view information from our ZenHub board within GitHub.
 
-**NOTE:** ZenHub is not needed as the issues we are working on are shared between GitHub and ZenHub.
+**NOTE:** ZenHub is not required however, as the issues we are working on are shared between GitHub and ZenHub.
 
 ## Repo health information
 
