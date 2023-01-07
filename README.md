@@ -37,7 +37,7 @@ Here is the current overview of the code health of the repository measured by:
 
 ### External links for development
 
--   Icons: https://fontawesome.com/search?s=solid&f=classic&o=r
+-   Component library: https://chakra-ui.com/docs/components
 
 ## Pre-requisites
 
