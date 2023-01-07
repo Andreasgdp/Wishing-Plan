@@ -5,9 +5,7 @@
 
 # Wishing Plan
 
-Wishing Plan allows you to save your wishes and plan when you can buy them based on the price and the amount of money you set aside each month. The app will then track the your monthly savings and calculate when you are able to purchase your wishes.
-
-You can also view a dashboard with a summary of their wishes and their progress towards achieving them. This app is useful for helping you save money and plan for their future purchases.
+Wishing Plan allows the user to tracks savings and calculates purchase feasibility of the user's wishes. It will also become a hub for planning bigger purchases with others, creating individual or collective wish lists to share on occasions like birthdays and Christmas and more.
 
 # Open Source
 
