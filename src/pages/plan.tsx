@@ -11,7 +11,7 @@ const Plan = () => {
 	return (
 		<>
 			<Head>
-				<title>Profile - {sessionData?.user?.name}</title>
+				<title>Plan - {sessionData?.user?.name}</title>
 			</Head>
 
 			<PlanScreen />
