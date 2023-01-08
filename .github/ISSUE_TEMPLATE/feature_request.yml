@@ -1,0 +1,40 @@
+name: Feature Request
+description: Suggest an idea for this project
+title: "[Feature]: "
+labels: [feature]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature to improve our product!
+  - type: textarea
+    id: is-problem
+    attributes:
+      label: Is your feature request related to a problem? Please describe
+      description: A clear and concise description of what the problem is. Ex.
+      placeholder: I'm always frustrated when [...]
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the solution you'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: To solve this issue...
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Describe alternatives you've considered 
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: A possible alternative to the current solution could be...
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Additional context 
+      description: Add any other context or screenshots about the feature request here.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/Andreasgdp/Wishing-Plan/blob/master/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
