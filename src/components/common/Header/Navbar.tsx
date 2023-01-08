@@ -178,7 +178,7 @@ function CollapsedMenu() {
 							<MenuItem as={NextLink} href="/plan">
 								Plan
 							</MenuItem>
-							<MenuItem as={NextLink} href="/shared-plan">
+							<MenuItem as={Link} disabled>
 								Shared Plan (Coming Soon)
 							</MenuItem>
 						</>
