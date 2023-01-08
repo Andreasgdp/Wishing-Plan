@@ -12,9 +12,9 @@ Wishing Plan allows the user to tracks savings and calculates purchase feasibili
 
 Wishting Plan is an open source project. We welcome contributions from the community. There are many ways to contribute to the project, from writing tutorials or blog posts, submitting bug reports and feature requests or writing code which can be incorporated into Wishing Plan itself. Here is a list of some of the ways you can contribute to the project:
 
--   [Report bugs](https://github.com/Andreasgdp/Wishing-Plan/issues) - If you find a bug, please report it in the issue tracker.
--   [Suggest new features](https://github.com/Andreasgdp/Wishing-Plan/issues) - If you have an idea for a new feature, please suggest it in the issue tracker.
--   [Implement new features](https://github.com/Andreasgdp/Wishing-Plan/issues) - If you want to implement a new feature, please create an issue in the issue tracker and describe the feature you want to implement. This will allow us to discuss the feature and make sure it fits with the project.
+-   [Report bugs](https://github.com/Andreasgdp/Wishing-Plan/issues/new/choose) - If you find a bug, please report it in the issue tracker.
+-   [Suggest new features](https://github.com/Andreasgdp/Wishing-Plan/issues/new/choose) - If you have an idea for a new feature, please suggest it in the issue tracker.
+-   [Implement new features](https://github.com/Andreasgdp/Wishing-Plan/issues/new/choose) - If you want to implement a new feature, please create an issue in the issue tracker and describe the feature you want to implement. This will allow us to discuss the feature and make sure it fits with the project.
 -   [Improve code quality](https://github.com/Andreasgdp/Wishing-Plan#repo-health-information) - We use SonarCloud and CodeScene to measure the code quality of our project. You can help us improve the code quality by fixing bugs and vulnerabilities.
 -   Improve documentation - If you find any errors in the documentation or want to improve it, please contribute with a pull request.
 -   In the future, we will want to implement translations of the app. If you are interested in helping us with this, please contact us at [wishing.plan.com@gmail.com](mailto: 'wishing.plan.com@gmail.com').
