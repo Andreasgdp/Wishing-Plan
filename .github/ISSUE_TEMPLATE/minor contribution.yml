@@ -1,12 +1,12 @@
 name: Minor contribution
-description: Create a minor contrubution
+description: Suggest a minor contrubution
 title: "[Minor]: "
 labels: [MINOR, good first issue]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for creating a new minor contribution to improve our product!
+        Thanks for suggesting a new minor contribution to improve our product!
   - type: textarea
     id: description
     attributes:
