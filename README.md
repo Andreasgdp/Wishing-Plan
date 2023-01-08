@@ -21,7 +21,7 @@ Wishting Plan is an open source project. We welcome contributions from the commu
 
 # Development
 
-## [Project Board](https://app.zenhub.com/workspaces/mealtime-63451d87af35b0d2cfc42e0c/board)
+## [Project Board](https://app.zenhub.com/workspaces/wishing-plan-637b3ad68b9646001dfac86a/board)
 
 **IMPORTANT**: In order to see our project board on ZenHub, you need to have an account and have connected it with your GitHub account.
 
