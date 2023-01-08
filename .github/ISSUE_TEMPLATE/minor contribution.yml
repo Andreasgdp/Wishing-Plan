@@ -1,0 +1,31 @@
+name: Minor contribution
+description: Suggest a minor contrubution
+title: "[Minor]: "
+labels: [MINOR, good first issue]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new minor contribution to improve our product!
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Short description of the contribution
+      placeholder: "Describe the contribution"
+    validations:
+      required: true
+  - type: textarea
+    id: comments-questions
+    attributes:
+      label: Comments / questions
+      description: Any comments or questions relating the contribution.
+      placeholder: We should devide this into sub-tasks...
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/Andreasgdp/Wishing-Plan/blob/master/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
