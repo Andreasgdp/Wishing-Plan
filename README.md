@@ -25,15 +25,19 @@ Wishting Plan is an open source project. We welcome contributions from the commu
 
 ### Pre-requisites
 
+-   Use node version "^12.19.0 || ^14.15.0 || ^16.13.0 || ^18.12.0"
+    -   This is because of the compatibility of next-auth@4.17.0
+-   Install yarn globally `npm install -g yarn`
+
 #### Windows
 
--   Install win-node-env globally `npm install -g win-node-env`
+-   Install win-node-env globally `npm install -g win-node-env` to be able to run e.g., `yarn db-seed` on Windows.
 
 ### Installation and setup
 
 -   Clone the repository
--   Install dependencies `yarn install` or just `yarn`
 -   Create local .env `cp .env.example .env` and fill in the values
+-   Install dependencies `yarn install` or just `yarn`
 -   Run the development server `yarn dev`
 
 ## [Project Board](https://app.zenhub.com/workspaces/wishing-plan-637b3ad68b9646001dfac86a/board)
