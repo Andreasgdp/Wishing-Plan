@@ -1,10 +1,10 @@
-import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import type { GetServerSideProps } from 'next';
 import { type NextPage } from 'next';
 
 import { DashboardScreen } from '@components/screens/Dashboard/DashboardScreen';
-import { getAuthSession } from '@utils/getServerSession';
 import { useSession } from 'next-auth/react';
 import router from 'next/router';
+import { requireAuthentication } from '@utils/requireAuthentication';
 
 const Home: NextPage = () => {
 	const { data: sessionData } = useSession();
@@ -23,23 +23,10 @@ const Home: NextPage = () => {
 
 export default Home;
 
-export const getServerSideProps: GetServerSideProps = async (
-	ctx: GetServerSidePropsContext
-) => {
-	const session = await getAuthSession(ctx);
-
-	if (!session) {
+export const getServerSideProps: GetServerSideProps = requireAuthentication(
+	async () => {
 		return {
-			redirect: {
-				destination: '/product',
-				permanent: false,
-			},
+			props: {},
 		};
 	}
-
-	return {
-		props: {
-			session,
-		},
-	};
-};
+);
