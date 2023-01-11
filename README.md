@@ -21,6 +21,21 @@ Wishting Plan is an open source project. We welcome contributions from the commu
 
 # Development
 
+## Getting started
+
+### Pre-requisites
+
+#### Windows
+
+-   Install win-node-env globally `npm install -g win-node-env`
+
+### Installation and setup
+
+-   Clone the repository
+-   Install dependencies `yarn install` or just `yarn`
+-   Create local .env `cp .env.example .env` and fill in the values
+-   Run the development server `yarn dev`
+
 ## [Project Board](https://app.zenhub.com/workspaces/wishing-plan-637b3ad68b9646001dfac86a/board)
 
 **IMPORTANT**: In order to see our project board on ZenHub, you need to have an account and have connected it with your GitHub account.
@@ -39,12 +54,6 @@ Here is the current overview of the code health of the repository measured by:
 ### External links for development
 
 -   Component library: https://chakra-ui.com/docs/components
-
-## Pre-requisites
-
-### Windows
-
--   install win-node-env globally `npm install -g win-node-env`
 
 ## Web Info
 
