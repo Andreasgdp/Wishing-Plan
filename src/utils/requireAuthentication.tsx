@@ -25,15 +25,6 @@ export function requireAuthentication(gssp: GetServerSideProps) {
 					},
 				};
 			} else {
-				if (route === '/auth/signin') {
-					return {
-						redirect: {
-							destination: '/',
-							permanent: false,
-						},
-					};
-				}
-
 				// If the user exists, return the props
 				return await gssp(ctx);
 			}

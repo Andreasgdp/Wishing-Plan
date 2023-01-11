@@ -11,9 +11,8 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
-import { requireAuthentication } from '@utils/requireAuthentication';
-import type { GetServerSideProps } from 'next';
-import { getProviders, signIn } from 'next-auth/react';
+import type { GetServerSidePropsContext } from 'next';
+import { getProviders, getSession, signIn } from 'next-auth/react';
 import NextLink from 'next/link';
 import { useState } from 'react';
 import type { IconType } from 'react-icons';
@@ -153,13 +152,27 @@ export default function SimpleCard({ providers }: { providers: any }) {
 	);
 }
 
-export const getServerSideProps: GetServerSideProps = requireAuthentication(
-	async () => {
-		const providers = await getProviders();
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+	ctx.res.setHeader(
+		'Cache-Control',
+		'public, s-maxage=1000, stale-while-revalidate=604800'
+	);
+
+	const session = await getSession(ctx);
+
+	if (session) {
 		return {
-			props: {
-				providers,
+			redirect: {
+				destination: '/',
+				permanent: false,
 			},
 		};
 	}
-);
+
+	const providers = await getProviders();
+	return {
+		props: {
+			providers,
+		},
+	};
+}
